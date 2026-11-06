@@ -48,7 +48,11 @@ Playback uses one `HTMLAudioElement`. On the first user interaction (browsers re
 
 ## Playlist and transport
 
-Each track is an object `{ name, fname, blob, url, dur, size }`. `url` is an object URL (`blob:`) for the file, revoked when the track is removed or the list is cleared. Duration is read by a helper metadata-only `<audio>` element.
+Each track is an object `{ name, fname, blob, url, dur, size }`.
+
+- **Repeat** has three modes (`repeat = 'off' | 'all' | 'one'`). In `one`, the `ended` event seeks to 0 and plays again; in `all`, the track after the last one is the first. If 3 tracks in a row end less than 500 ms after starting, playback stops (prevents endless loops with empty files).
+- **Folders**: `+ PASTA` uses an `<input type="file" webkitdirectory>`; dropped folders are walked with `webkitGetAsEntry()` / `readEntries()` (up to 20 levels deep and 50,000 visited entries). Only files with an audio extension are kept, hidden items are skipped, and files are sorted with `localeCompare` and `numeric: true`, up to 2,000 per folder. The whole playlist is capped at 5,000 tracks.
+- **Duration** is read through a queue with at most 4 metadata-only `<audio>` elements at a time (10 s timeout each), and the list is re-rendered at most once per frame. Without this, a large folder opened thousands of readers at once and froze the tab. `url` is an object URL (`blob:`) for the file, revoked when the track is removed or the list is cleared. Duration is read by a helper metadata-only `<audio>` element.
 
 File names and titles go through `oneLine()`, which strips control characters, line breaks and bidirectional-text override characters, and truncates to 200 characters. Everything shown on screen is set with `textContent`, never `innerHTML` with user data.
 

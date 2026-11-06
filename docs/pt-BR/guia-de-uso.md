@@ -29,7 +29,12 @@ Dica: no celular, use **Adicionar à tela de início** no menu do navegador para
 ## 2. Adicionando músicas
 
 - Toque em **+ ADD** (na playlist) ou no botão de ejetar **⏏** (no painel principal) e escolha um ou vários arquivos.
-- No computador, você também pode **arrastar arquivos** para qualquer lugar da janela.
+- Toque em **+ PASTA** (ou tecla `P`) e escolha uma **pasta inteira**: todos os arquivos de áudio dentro dela, inclusive em subpastas, entram na playlist em **ordem natural** pelo caminho (`2 - …` antes de `10 - …`). Arquivos que não são áudio e pastas ou arquivos ocultos (começando com `.`) são ignorados. Até 2.000 faixas por pasta.
+- No computador, você também pode **arrastar arquivos ou pastas** para qualquer lugar da janela.
+
+Ao escolher uma pasta, alguns navegadores perguntam se você quer "enviar" os arquivos ao site. **Nada é enviado**: o tocador só lê os arquivos no seu aparelho. Em celulares, a escolha de pasta depende do navegador; se a opção não aparecer, use **+ ADD** e selecione vários arquivos.
+
+A playlist aceita até 5.000 faixas.
 - Também é possível adicionar um **ZIP exportado pelo tocador** (ou qualquer ZIP com músicas) — veja a [seção 9](#9-exportando-e-importando).
 
 Formatos aceitos: MP3, WAV, OGG, FLAC, M4A, AAC, OPUS e WEBM. Se o navegador não conseguir decodificar um arquivo, a faixa aparece na lista mas não toca.
@@ -43,7 +48,7 @@ Formatos aceitos: MP3, WAV, OGG, FLAC, M4A, AAC, OPUS e WEBM. Se o navegador nã
 | ■ | Parar e voltar ao início |
 | ⏭ | Próxima faixa |
 | **SHUF** | Ordem aleatória (aceso = ligado) |
-| **REP** | Repetir a playlist inteira ao chegar ao fim |
+| **REP** | Cada toque troca o modo: **desligado** → **lista inteira** (aceso, `↻` no display) → **só esta faixa** (aceso com um `1`, `↻1` no display). Em "só esta faixa", a música recomeça ao terminar; os botões ⏮ ⏭ continuam trocando de faixa |
 | Barra de progresso | Arraste para ir a qualquer ponto da música |
 | **VOL** | Volume |
 | **BAL** | Balanço esquerdo/direito. Tem uma marca no centro e uma trava magnética: perto do meio, ele "gruda" no centro. O rótulo mostra `BAL ●` (centro), `E 40` (esquerda) ou `D 25` (direita); **toque no rótulo** ou dê dois cliques no controle para voltar ao centro |
@@ -109,9 +114,9 @@ Dentro do Claude, o navegador pede confirmação antes de salvar o arquivo expor
 | `X` | Tocar | `C` | Pausar |
 | `V` | Parar | `Espaço` | Tocar/Pausar |
 | `←` `→` | Voltar/avançar 5 s | `↑` `↓` | Volume |
-| `S` | Aleatório | `R` | Repetir |
+| `S` | Aleatório | `R` | Repetir: desligado → lista → faixa |
 | `E` | Equalizador | `K` | Próxima skin |
-| `L` | Abrir arquivos | | |
+| `L` | Abrir arquivos | `P` | Adicionar pasta |
 
 Os atalhos não funcionam enquanto você digita no campo de nome da playlist.
 
@@ -135,5 +140,7 @@ Se o tocador estiver aberto como arquivo local ou em um endereço `*.github.io`,
 | "Sem espaço no navegador" | O navegador limitou o armazenamento. Apague playlists antigas ou exporte em ZIP |
 | As playlists sumiram | Os dados do navegador foram limpos, ou você abriu o tocador por outro endereço/navegador. Cada endereço tem o próprio armazenamento |
 | O som distorce com o EQ | Abaixe o **PRE** |
+| "Reprodução parada: as faixas estão terminando rápido demais" | Proteção contra repetição sem fim: se 3 faixas seguidas terminam em menos de meio segundo, o tocador para. Acontece com arquivos vazios ou corrompidos |
+| O botão **+ PASTA** não abre a pasta no celular | Nem todo navegador de celular permite escolher pastas. Use **+ ADD** e selecione vários arquivos |
 | Não consigo deixar o balanço em um valor pequeno (1 a 10) | É a trava magnética do centro: valores até 10 para cada lado voltam para o meio, de propósito |
 | Os atalhos não respondem | Clique em uma área vazia do tocador para tirar o foco de campos e menus |

@@ -31,7 +31,12 @@ Tip: on a phone, use **Add to Home Screen** from the browser menu to open the pl
 ## 2. Adding music
 
 - Tap **+ ADD** (in the playlist) or the eject button **⏏** (main panel) and pick one or more files.
-- On desktop you can also **drag files** anywhere onto the window.
+- Tap **+ PASTA** (folder, or press `P`) and pick a **whole folder**: every audio file inside it, including subfolders, is added in **natural order** by path (`2 - …` before `10 - …`). Non-audio files and hidden files or folders (starting with `.`) are skipped. Up to 2,000 tracks per folder.
+- On desktop you can also **drag files or folders** anywhere onto the window.
+
+When you pick a folder, some browsers ask whether you want to "upload" the files to the site. **Nothing is uploaded**: the player only reads the files on your device. On phones, folder picking depends on the browser; if it is not offered, use **+ ADD** and select several files.
+
+The playlist holds up to 5,000 tracks.
 - You can also add a **ZIP exported by the player** (or any ZIP containing music) — see [section 9](#9-exporting-and-importing).
 
 Accepted formats: MP3, WAV, OGG, FLAC, M4A, AAC, OPUS and WEBM. If the browser cannot decode a file, the track is listed but will not play.
@@ -45,7 +50,7 @@ Accepted formats: MP3, WAV, OGG, FLAC, M4A, AAC, OPUS and WEBM. If the browser c
 | ■ | Stop and rewind |
 | ⏭ | Next track |
 | **SHUF** | Shuffle (lit = on) |
-| **REP** | Repeat the whole playlist when it ends |
+| **REP** | Each tap changes the mode: **off** → **whole playlist** (lit, `↻` on the display) → **current track only** (lit with a small `1`, `↻1` on the display). In track mode the song restarts when it ends; ⏮ ⏭ still change tracks |
 | Seek bar | Drag to jump anywhere in the track |
 | **VOL** | Volume |
 | **BAL** | Left/right balance. It has a center mark and a magnetic center: near the middle it snaps to center. The label shows `BAL ●` (center), `E 40` (left, *esquerda*) or `D 25` (right, *direita*); **tap the label** or double-click the control to recenter |
@@ -111,9 +116,9 @@ Inside Claude, the browser asks for confirmation before saving an exported file.
 | `X` | Play | `C` | Pause |
 | `V` | Stop | `Space` | Play/Pause |
 | `←` `→` | Seek ±5 s | `↑` `↓` | Volume |
-| `S` | Shuffle | `R` | Repeat |
+| `S` | Shuffle | `R` | Repeat: off → playlist → track |
 | `E` | Equalizer | `K` | Next skin |
-| `L` | Open files | | |
+| `L` | Open files | `P` | Add a folder |
 
 Shortcuts are ignored while typing in the playlist name field.
 
@@ -137,5 +142,7 @@ When the player runs as a local file or on a `*.github.io` address, it shows a w
 | "Sem espaço no navegador" (out of browser storage) | The browser limited storage. Delete old playlists or export them as ZIP |
 | Playlists disappeared | Browser data was cleared, or you opened the player from another address/browser. Each address has its own storage |
 | Sound distorts with the EQ | Lower **PRE** |
+| "Reprodução parada: as faixas estão terminando rápido demais" (playback stopped: tracks end too fast) | Protection against endless repeat loops: if 3 tracks in a row end in under half a second, the player stops. It happens with empty or corrupted files |
+| **+ PASTA** does not open a folder on my phone | Not every mobile browser supports picking folders. Use **+ ADD** and select several files |
 | I can't set a small balance value (1–10) | That is the magnetic center: values up to 10 on either side snap back to the middle, by design |
 | Shortcuts do not respond | Click an empty area of the player to move focus away from fields and menus |

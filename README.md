@@ -14,11 +14,12 @@ A minimalist, Winamp-inspired audio player that runs entirely in your browser. I
 
 | | |
 |---|---|
-| **Playback** | Play, pause, stop, previous/next, shuffle, repeat, seek bar, volume and stereo balance (with a magnetic center: it snaps back to the middle) |
+| **Playback** | Play, pause, stop, previous/next, shuffle, repeat (off / whole playlist / current track), seek bar, volume and stereo balance (with a magnetic center: it snaps back to the middle) |
 | **Winamp-style display** | Elapsed/remaining time, scrolling title, estimated bitrate |
 | **Visualizer** | Spectrum bars with falling peaks, oscilloscope, or off |
 | **10-band equalizer** | Preamp plus 10 presets (Flat, Rock, Pop, Jazz, Classical, Electronic, Bass+, Treble+, Vocal, Headphones) |
 | **6 skins** | Classic, Amber, Ocean, Synthwave, Paper (light) and Graphite |
+| **Add a whole folder** | Pick a folder (or drag it in) and every audio file inside, including subfolders, is added in natural order (2 before 10) |
 | **Saved playlists** | Named playlists stored in the browser together with the audio; the last one reopens automatically |
 | **Export / import** | ZIP with the audio files plus `playlist.m3u` (opens in Winamp, VLC, foobar2000…), or the M3U list alone; ZIPs can be imported back |
 | **Formats** | MP3, WAV, OGG, FLAC, M4A, AAC, OPUS, WEBM (whatever your browser can decode) |
@@ -30,7 +31,7 @@ A minimalist, Winamp-inspired audio player that runs entirely in your browser. I
 
 **Use it offline** — download [`index.html`](index.html) and open it in Chrome, Edge, Firefox or Safari.
 
-Then tap **+ ADD** (or drag audio files onto the window) and press play.
+Then tap **+ ADD** for files or **+ PASTA** for a whole folder (or drag files or folders onto the window) and press play.
 
 ### Keyboard shortcuts
 
@@ -40,9 +41,9 @@ Then tap **+ ADD** (or drag audio files onto the window) and press play.
 | `X` | Play | `C` | Pause |
 | `V` | Stop | `Space` | Play/Pause |
 | `←` `→` | Seek ±5 s | `↑` `↓` | Volume |
-| `S` | Shuffle | `R` | Repeat |
+| `S` | Shuffle | `R` | Repeat: off → playlist → track |
 | `E` | Equalizer | `K` | Next skin |
-| `L` | Open files | | |
+| `L` | Open files | `P` | Add a folder |
 
 ## Documentation
 

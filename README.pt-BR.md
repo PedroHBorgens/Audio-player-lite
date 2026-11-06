@@ -12,11 +12,12 @@ Um tocador de áudio minimalista, inspirado no Winamp, que roda inteiramente no 
 
 | | |
 |---|---|
-| **Reprodução** | Tocar, pausar, parar, anterior/próxima, aleatório, repetir, barra de progresso, volume e balanço (com centro magnético: ele "gruda" no meio) |
+| **Reprodução** | Tocar, pausar, parar, anterior/próxima, aleatório, repetir (desligado / lista inteira / só a faixa), barra de progresso, volume e balanço (com centro magnético: ele "gruda" no meio) |
 | **Display estilo Winamp** | Tempo decorrido/restante, título rolante, taxa de bits estimada |
 | **Visualizador** | Barras de espectro com picos, osciloscópio ou desligado |
 | **Equalizador de 10 bandas** | Pré-amplificador e 10 presets (Flat, Rock, Pop, Jazz, Clássica, Eletrônica, Grave+, Agudo+, Voz, Fone) |
 | **6 skins** | Clássico, Âmbar, Oceano, Synthwave, Papel (claro) e Grafite |
+| **Adicionar uma pasta inteira** | Escolha uma pasta (ou arraste) e todos os áudios dentro dela, inclusive em subpastas, entram em ordem natural (2 antes de 10) |
 | **Playlists salvas** | Playlists com nome guardadas no navegador junto com o áudio; a última reabre sozinha |
 | **Exportar / importar** | ZIP com as músicas e um `playlist.m3u` (abre no Winamp, VLC, foobar2000…), ou só a lista M3U; o ZIP pode ser importado de volta |
 | **Formatos** | MP3, WAV, OGG, FLAC, M4A, AAC, OPUS, WEBM (o que o seu navegador souber decodificar) |
@@ -28,7 +29,7 @@ Um tocador de áudio minimalista, inspirado no Winamp, que roda inteiramente no 
 
 **Offline** — baixe o [`index.html`](index.html) e abra no Chrome, Edge, Firefox ou Safari.
 
-Depois toque em **+ ADD** (ou arraste arquivos de áudio para a janela) e aperte play.
+Depois toque em **+ ADD** para arquivos ou **+ PASTA** para uma pasta inteira (ou arraste arquivos ou pastas para a janela) e aperte play.
 
 ### Atalhos de teclado
 
@@ -38,9 +39,9 @@ Depois toque em **+ ADD** (ou arraste arquivos de áudio para a janela) e aperte
 | `X` | Tocar | `C` | Pausar |
 | `V` | Parar | `Espaço` | Tocar/Pausar |
 | `←` `→` | Avançar/voltar 5 s | `↑` `↓` | Volume |
-| `S` | Aleatório | `R` | Repetir |
+| `S` | Aleatório | `R` | Repetir: desligado → lista → faixa |
 | `E` | Equalizador | `K` | Próxima skin |
-| `L` | Abrir arquivos | | |
+| `L` | Abrir arquivos | `P` | Adicionar pasta |
 
 ## Documentação
 

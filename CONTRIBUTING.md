@@ -31,7 +31,8 @@ Thanks for your interest! Bug reports, ideas and pull requests are welcome.
 
 ### Test checklist
 
-- [ ] Add files with **+ ADD** and by drag and drop; play, pause, stop, previous/next, seek
+- [ ] Add files with **+ ADD**, a folder with **+ PASTA**, and files/folders by drag and drop; play, pause, stop, previous/next, seek
+- [ ] Repeat: off → playlist → track; in track mode the song restarts
 - [ ] Equalizer presets, PRE, ON/OFF; balance snaps to center and the label recenters it; all 6 skins (including the light **Papel** skin)
 - [ ] Save, reload the page, reopen and delete a playlist
 - [ ] Export ZIP and M3U; import the exported ZIP back
@@ -89,7 +90,8 @@ Obrigado pelo interesse! Relatos de bugs, ideias e pull requests são bem-vindos
 
 ### Lista de testes
 
-- [ ] Adicionar arquivos pelo **+ ADD** e arrastando; tocar, pausar, parar, anterior/próxima, barra de progresso
+- [ ] Adicionar arquivos pelo **+ ADD**, uma pasta pelo **+ PASTA**, e arquivos/pastas arrastando; tocar, pausar, parar, anterior/próxima, barra de progresso
+- [ ] Repetir: desligado → lista → faixa; no modo faixa a música recomeça
 - [ ] Presets do equalizador, PRE, ON/OFF; balanço trava no centro e o rótulo recentraliza; as 6 skins (inclusive a clara, **Papel**)
 - [ ] Salvar, recarregar a página, reabrir e apagar uma playlist
 - [ ] Exportar ZIP e M3U; importar de volta o ZIP exportado

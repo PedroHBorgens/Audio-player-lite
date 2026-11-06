@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-UyJpdxXCJTDaeaknKqEkzDeKp2XGn4OrcySY11Gkyw4=' 'sha256-VJFWndwkPoXZNhfLfpiQuBGPYclR+zneI/+eBkGU9XQ='; style-src 'unsafe-inline'; media-src blob:; img-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-UyJpdxXCJTDaeaknKqEkzDeKp2XGn4OrcySY11Gkyw4=' 'sha256-u4eP+Ko4HIqc3ccjETy5IHhuX0CqNyM73uiu2KVatZo='; style-src 'unsafe-inline'; media-src blob:; img-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Tocador Minimalista</title>
 <style>
@@ -114,7 +114,8 @@
   .item.cur .name,.item.cur .n{color:var(--accent)}
   .empty{padding:28px 14px;text-align:center;color:var(--dim);line-height:1.8;border:1px dashed var(--line);margin:10px;border-radius:4px}
   .empty b{color:var(--text);font-weight:400}
-  .plfoot{display:flex;gap:4px;padding:8px 10px;border-top:1px solid var(--line);align-items:center}
+  .plfoot{display:flex;gap:4px;padding:8px 10px;border-top:1px solid var(--line);align-items:center;flex-wrap:wrap;row-gap:6px}
+  .btn.txt{white-space:nowrap}
   .plfoot .info{margin-left:auto;font-size:9px;color:var(--dim);letter-spacing:.08em}
   .drop{outline:2px dashed var(--accent2);outline-offset:-6px}
   .help{font-size:9px;color:var(--dim);text-align:center;letter-spacing:.06em;line-height:1.8}
@@ -136,6 +137,10 @@
   .sv .btn{height:22px}
   .msg{font-size:9px;color:var(--accent);letter-spacing:.06em;min-height:11px}
   .msg.err{color:#e06c6c}
+  .plmsg{padding:6px 10px 0}
+  .plmsg:empty{display:none}
+  .btn.rep1{position:relative}
+  .btn.rep1::after{content:'1';position:absolute;top:1px;right:3px;font-size:8px;line-height:1;color:var(--accent)}
 </style>
 </head>
 <body>
@@ -163,7 +168,7 @@
       <button class="btn" id="open" title="Abrir arquivos (L)"><svg viewBox="0 0 12 12"><path d="M6 1l5 5H8v3H4V6H1zM1 10h10v1.5H1z"/></svg></button>
       <div class="grow"></div>
       <button class="btn txt" id="shuf" title="Aleatório (S)">SHUF</button>
-      <button class="btn txt" id="rep" title="Repetir (R)">REP</button>
+      <button class="btn txt" id="rep" title="Repetir: desligado (R alterna)">REP</button>
     </div>
     <div class="controls" style="padding-top:0">
       <div class="vol" style="flex:1;width:auto"><label>VOL</label><input type="range" id="vol" min="0" max="100" value="80"></div>
@@ -213,8 +218,10 @@
       <div class="msg" id="expMsg"></div>
     </div>
     <div class="pl" id="pl"></div>
+    <div class="msg plmsg" id="plMsg"></div>
     <div class="plfoot">
-      <button class="btn txt" id="add">+ ADD</button>
+      <button class="btn txt" id="add" title="Adicionar arquivos (L)">+ ADD</button>
+      <button class="btn txt" id="addDir" title="Adicionar uma pasta inteira (P)">+ PASTA</button>
       <button class="btn txt" id="listsBtn">LISTAS</button>
       <button class="btn txt" id="expBtn">EXPORTAR</button>
       <span class="info" id="plInfo">0 faixas</span>
@@ -222,10 +229,11 @@
   </div>
 
   <div class="help">
-    <kbd>Z</kbd> ant · <kbd>X</kbd> play · <kbd>C</kbd> pausa · <kbd>V</kbd> stop · <kbd>B</kbd> próx · <kbd>←</kbd><kbd>→</kbd> 5s · <kbd>↑</kbd><kbd>↓</kbd> vol · <kbd>K</kbd> skin<br>
-    arraste arquivos de áudio para qualquer lugar da janela
+    <kbd>Z</kbd> ant · <kbd>X</kbd> play · <kbd>C</kbd> pausa · <kbd>V</kbd> stop · <kbd>B</kbd> próx · <kbd>←</kbd><kbd>→</kbd> 5s · <kbd>↑</kbd><kbd>↓</kbd> vol · <kbd>K</kbd> skin · <kbd>R</kbd> repetir · <kbd>P</kbd> pasta<br>
+    arraste arquivos ou pastas de áudio para qualquer lugar da janela
   </div>
   <input type="file" id="file" accept="audio/*,.mp3,.wav,.ogg,.flac,.m4a,.aac,.opus,.webm,.zip,application/zip" multiple>
+  <input type="file" id="folder" webkitdirectory directory multiple>
 </div>
 
 <script>/* JSZip 3.10.1 embutido — MIT/GPLv3 */
@@ -252,7 +260,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   // ---------- estado ----------
   let tracks = [];      // {name, url, dur, size}
   let cur = -1;
-  let shuffle = false, repeat = false, remaining = false;
+  let shuffle = false, repeat = 'off', remaining = false;   // repeat: 'off' | 'all' | 'one'
   let vizMode = 0;      // 0 barras, 1 osciloscópio, 2 off
   let ctx, src, analyser, panner, preamp, filters = [], eqEnabled = true;
 
@@ -311,25 +319,53 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     fname = oneLine(fname).slice(0,200) || 'faixa';
     name = oneLine(name || clean(fname)).slice(0,200) || 'Sem título';
     const t = { name, fname, blob, url: URL.createObjectURL(blob), dur: dur || null, size: blob.size };
-    if (!t.dur){ const probe = new Audio(); probe.preload='metadata'; probe.src = t.url;
-      probe.onloadedmetadata = () => { if (isFinite(probe.duration)) { t.dur = probe.duration; render(); } }; }
+    if (!t.dur){ probeQ.push(t); probeNext(); }
     return t;
   }
+  // leitura de duração em fila: no máximo 4 ao mesmo tempo (pastas grandes não travam o navegador)
+  const probeQ = []; let probing = 0;
+  function probeNext(){
+    while (probing < 4 && probeQ.length){
+      const t = probeQ.shift();
+      if (!tracks.includes(t) && !pendingTracks.has(t)) continue;      // faixa já removida
+      probing++;
+      const a = new Audio(); a.preload = 'metadata'; let fin = false;
+      const done = () => { if (fin) return; fin = true; clearTimeout(to); probing--; a.removeAttribute('src'); try { a.load(); } catch(e){} probeNext(); };
+      const to = setTimeout(done, 10000);
+      a.onloadedmetadata = () => { if (isFinite(a.duration)) { t.dur = a.duration; scheduleRender(); } done(); };
+      a.onerror = done;
+      a.src = t.url;
+    }
+  }
+  const pendingTracks = new Set();   // faixas criadas e ainda não colocadas na lista (ZIP em leitura)
+  let renderPending = false;
+  function scheduleRender(){ if (renderPending) return; renderPending = true; requestAnimationFrame(() => { renderPending = false; render(); }); }
+  const MAX_TRACKS = 5000;
   async function addFiles(list){
     const all = [...list];
     const zips = all.filter(f => /\.zip$/i.test(f.name) || f.type === 'application/zip');
-    const files = all.filter(f => !zips.includes(f) && (f.type.startsWith('audio/') || AUDIO_RE.test(f.name)));
+    const zipSet = new Set(zips);
+    let files = all.filter(f => !zipSet.has(f) && (f.type.startsWith('audio/') || AUDIO_RE.test(f.name)));
     const start = tracks.length;
+    const room = Math.max(0, MAX_TRACKS - tracks.length);
+    if (files.length > room){ plMsg(`A playlist aceita até ${MAX_TRACKS} faixas; ${files.length - room} ficaram de fora.`, true); files = files.slice(0, room); }
     files.forEach(f => tracks.push(makeTrack(f, f.name)));
-    for (const z of zips){ try { (await readZip(z)).forEach(t => tracks.push(t)); } catch(e){ $('expPanel').classList.add('show'); flash('expMsg', (e && /ZIP/.test(e.message)) ? e.message : 'Não consegui ler o ZIP.', true); } }
-    if (tracks.length === start) return;
+    for (const z of zips){ try {
+        const got = await readZip(z); const r = Math.max(0, MAX_TRACKS - tracks.length);
+        got.slice(r).forEach(t => URL.revokeObjectURL(t.url));
+        if (got.length > r) plMsg(`A playlist aceita até ${MAX_TRACKS} faixas; ${got.length - r} ficaram de fora.`, true);
+        got.slice(0, r).forEach(t => { pendingTracks.delete(t); tracks.push(t); });
+        got.forEach(t => pendingTracks.delete(t));
+      } catch(e){ $('expPanel').classList.add('show'); flash('expMsg', (e && /ZIP/.test(e.message)) ? e.message : 'Não consegui ler o ZIP.', true); } }
+    if (tracks.length === start) return 0;
     render();
     if (cur < 0) { load(start); play(); }
+    return tracks.length - start;
   }
   function render(){
     const pl = $('pl');
     if (!tracks.length){
-      pl.innerHTML = '<div class="empty">Sem faixas.<br><b>Toque em + ADD</b> ou arraste arquivos de áudio aqui.<br>MP3 · WAV · OGG · FLAC · M4A</div>';
+      pl.innerHTML = '<div class="empty">Sem faixas.<br><b>Toque em + ADD</b> ou <b>+ PASTA</b> para uma pasta inteira — ou arraste arquivos e pastas aqui.<br>MP3 · WAV · OGG · FLAC · M4A</div>';
     } else {
       pl.innerHTML = tracks.map((t,i)=>`<div class="item${i===cur?' cur':''}" data-i="${i}"><span class="n">${i+1}.</span><span class="name"></span><span class="d">${t.dur?fmt(t.dur):'--:--'}</span><button class="x" data-x="${i}" title="Remover">×</button></div>`).join('');
       pl.querySelectorAll('.item .name').forEach((el,i)=> el.textContent = tracks[i].name);
@@ -551,9 +587,9 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       const MIME = {mp3:'audio/mpeg',wav:'audio/wav',ogg:'audio/ogg',flac:'audio/flac',m4a:'audio/mp4',aac:'audio/aac',opus:'audio/ogg',webm:'audio/webm'};
       const blob = new Blob(await inflateLimited(f, MAX_FILE, budget), { type: MIME[ext] || '' });
       const fname = base(f.name).replace(/^\d+\s*-\s*/, '');
-      out.push(makeTrack(blob, fname, titles.get(f.name)));
+      const tr = makeTrack(blob, fname, titles.get(f.name)); pendingTracks.add(tr); out.push(tr);
     }
-    } catch(e){ out.forEach(t => URL.revokeObjectURL(t.url)); throw e; }
+    } catch(e){ out.forEach(t => { pendingTracks.delete(t); URL.revokeObjectURL(t.url); }); throw e; }
     if (!listName) setListName(clean(file.name));
     return out;
   }
@@ -577,8 +613,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     if (!tracks.length) return -1;
     if (shuffle && tracks.length > 1){ let n; do n = Math.floor(Math.random()*tracks.length); while(n===cur); return n; }
     let n = cur + dir;
-    if (n >= tracks.length) return repeat ? 0 : -1;
-    if (n < 0) return repeat ? tracks.length-1 : 0;
+    if (n >= tracks.length) return repeat !== 'off' ? 0 : -1;
+    if (n < 0) return repeat !== 'off' ? tracks.length-1 : 0;
     return n;
   }
   function go(dir){
@@ -586,7 +622,13 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     const n = nextIdx(dir); if (n < 0) return;
     const was = !audio.paused; load(n); if (was || dir) play();
   }
-  audio.addEventListener('ended', () => { const n = nextIdx(1); if (n<0){ stop(); return; } load(n); play(); });
+  let playStartedAt = 0, quickEnds = 0;
+  audio.addEventListener('playing', () => { playStartedAt = performance.now(); });
+  audio.addEventListener('ended', () => {
+    quickEnds = performance.now() - playStartedAt < 500 ? quickEnds + 1 : 0;
+    if (quickEnds >= 3){ quickEnds = 0; stop(); plMsg('Reprodução parada: as faixas estão terminando rápido demais para repetir.', true); return; }
+    if (repeat === 'one'){ audio.currentTime = 0; play(); return; }
+    const n = nextIdx(1); if (n<0){ stop(); return; } load(n); play(); });
   ['play','pause','emptied'].forEach(ev => audio.addEventListener(ev, updState));
   audio.addEventListener('loadedmetadata', () => {
     if (audio.duration === Infinity){ // webm gravado sem duração: força o navegador a calcular
@@ -613,7 +655,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   audio.addEventListener('timeupdate', updTime);
   $('seek').addEventListener('input', e => { seeking = true; setP(e.target); const d=audio.duration; if(isFinite(d)) $('time').textContent = fmt(e.target.value/1000*d); });
   $('seek').addEventListener('change', e => { const d=audio.duration; if(isFinite(d)) audio.currentTime = e.target.value/1000*d; seeking=false; });
-  $('timeBox').onclick = () => { remaining = !remaining; $('mode').textContent = remaining?'REST':''; updTime(); };
+  $('timeBox').onclick = () => { remaining = !remaining; $('mode').textContent = remaining ? 'REST' : (repeat === 'one' ? '↻1' : repeat === 'all' ? '↻' : ''); updTime(); };
 
   // botões
   $('play').onclick = pause;
@@ -622,8 +664,56 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   $('next').onclick = () => go(1);
   $('open').onclick = $('add').onclick = () => $('file').click();
   $('file').onchange = e => { initAudio(); addFiles(e.target.files); e.target.value=''; };
+  // pasta inteira: só áudio, em ordem natural pelo caminho (2 antes de 10)
+  const MAX_FOLDER = 2000;
+  const byPath = (a,b) => (a.webkitRelativePath || a.name).localeCompare(b.webkitRelativePath || b.name, 'pt-BR', { numeric:true, sensitivity:'base' });
+  function plMsg(t, err){ const el=$('plMsg'); el.textContent = t || ''; el.classList.toggle('err', !!err); clearTimeout(plMsg.t); if (t) plMsg.t = setTimeout(()=>el.textContent='', 6000); }
+  async function addFolderFiles(list){
+    let files = [...list].filter(f => AUDIO_RE.test(f.name) && !/(^|\/)\./.test(f.webkitRelativePath || f.name)).sort(byPath);
+    if (!files.length) return plMsg('Nenhum arquivo de áudio encontrado nessa pasta.', true);
+    const extra = files.length - MAX_FOLDER;
+    if (extra > 0) files = files.slice(0, MAX_FOLDER);
+    const n = await addFiles(files);
+    if (n !== files.length) return;   // addFiles já avisou sobre o limite da playlist
+    plMsg(`${n} faixa${n===1?'':'s'} adicionada${n===1?'':'s'}` + (extra > 0 ? ` (limite de ${MAX_FOLDER} por pasta; ${extra} ficaram de fora)` : ''), extra > 0);
+  }
+  $('addDir').onclick = () => $('folder').click();
+  $('folder').onchange = e => { initAudio(); addFolderFiles(e.target.files); e.target.value=''; };
+  // pastas arrastadas: percorre subpastas (até 20 níveis)
+  async function filesFromDrop(dt){
+    const entries = [...(dt.items || [])].map(it => it.webkitGetAsEntry && it.webkitGetAsEntry()).filter(Boolean);
+    if (!entries.some(e => e.isDirectory)) return null;           // só arquivos soltos: caminho normal
+    const out = []; let visited = 0;
+    const full = () => out.length >= MAX_FOLDER + 1 || visited > 50000;
+    const walk = async (entry, depth, path) => {
+      if (full() || depth > 20) return;
+      visited++;
+      if (entry.isFile){
+        if (!AUDIO_RE.test(entry.name)) return;
+        const f = await new Promise(res => entry.file(res, () => res(null)));
+        if (f){ try { Object.defineProperty(f, 'webkitRelativePath', { value: path + entry.name }); } catch(e){} out.push(f); }
+      } else if (entry.isDirectory && !entry.name.startsWith('.')){
+        const reader = entry.createReader();
+        for (;;){
+          const batch = await new Promise(res => reader.readEntries(res, () => res([])));
+          if (!batch.length || full()) break;
+          for (const b of batch){ if (full()) break; await walk(b, depth + 1, path + entry.name + '/'); }
+        }
+      }
+    };
+    for (const e of entries) await walk(e, 0, '');
+    return out;
+  }
   $('shuf').onclick = () => { shuffle=!shuffle; $('shuf').classList.toggle('on',shuffle); };
-  $('rep').onclick  = () => { repeat=!repeat;  $('rep').classList.toggle('on',repeat); };
+  const REP_INFO = { off:['REP','Repetir: desligado'], all:['REP','Repetir: lista inteira'], one:['REP','Repetir: só esta faixa'] };
+  function setRepeat(m){
+    repeat = m; const b = $('rep');
+    b.textContent = REP_INFO[m][0]; b.title = REP_INFO[m][1] + ' (R alterna)';
+    b.classList.toggle('on', m !== 'off'); b.classList.toggle('rep1', m === 'one');
+    b.setAttribute('aria-label', REP_INFO[m][1]);
+    $('mode').textContent = m === 'one' ? '↻1' : m === 'all' ? '↻' : (remaining ? 'REST' : '');
+  }
+  $('rep').onclick = () => setRepeat(repeat === 'off' ? 'all' : repeat === 'all' ? 'one' : 'off');
 
   // volume / balanço
   const vol = $('vol'), bal = $('bal');
@@ -762,7 +852,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   app.addEventListener('dragenter', e => { e.preventDefault(); dc++; $('plWin').classList.add('drop'); });
   app.addEventListener('dragleave', e => { if(--dc<=0){ dc=0; $('plWin').classList.remove('drop'); } });
   app.addEventListener('dragover', e => e.preventDefault());
-  app.addEventListener('drop', e => { e.preventDefault(); dc=0; $('plWin').classList.remove('drop'); initAudio(); addFiles(e.dataTransfer.files); });
+  app.addEventListener('drop', async e => {
+    e.preventDefault(); dc=0; $('plWin').classList.remove('drop'); initAudio();
+    const dt = e.dataTransfer, loose = [...dt.files];
+    let fromDirs = null; try { fromDirs = await filesFromDrop(dt); } catch(err){}
+    if (fromDirs) addFolderFiles(fromDirs); else addFiles(loose);
+  });
 
   // ---------- atalhos (estilo Winamp) ----------
   addEventListener('keydown', e => {
@@ -770,7 +865,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     const k = e.key.toLowerCase();
     const map = {
       'z': () => go(-1), 'x': play, 'c': () => audio.paused ? play() : audio.pause(), 'v': stop, 'b': () => go(1),
-      ' ': pause, 'l': () => $('file').click(), 's': () => $('shuf').click(), 'r': () => $('rep').click(), 'e': () => $('eqBtn').click(), 'k': () => setSkin(skinIdx+1),
+      ' ': pause, 'l': () => $('file').click(), 's': () => $('shuf').click(), 'r': () => $('rep').click(), 'p': () => $('folder').click(), 'e': () => $('eqBtn').click(), 'k': () => setSkin(skinIdx+1),
       'arrowleft': () => audio.currentTime = Math.max(0, audio.currentTime-5),
       'arrowright': () => audio.currentTime = Math.min(audio.duration||0, audio.currentTime+5),
       'arrowup': () => setVol(+vol.value+5), 'arrowdown': () => setVol(+vol.value-5),

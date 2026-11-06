@@ -2,6 +2,19 @@
 
 Format based on [Keep a Changelog](https://keepachangelog.com/). / Formato baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/).
 
+## [1.2.0] — 2026-11-06
+
+### Added / Adicionado
+
+- Repeat modes: off → whole playlist → current track (`↻` / `↻1` on the display) / Modos de repetir: desligado → lista inteira → só a faixa (`↻` / `↻1` no display)
+- **+ PASTA** button and `P` key to add a whole folder, plus folder drag and drop, with subfolders and natural ordering / Botão **+ PASTA** e tecla `P` para adicionar uma pasta inteira, e arrastar pastas, com subpastas e ordem natural
+
+### Security / Segurança
+
+- Duration probes queued (max. 4 at a time) and batched rendering, so large folders cannot freeze the tab / Leitura de duração em fila (máx. 4 por vez) e redesenho em lote, para pastas grandes não travarem a aba
+- Limits: 2,000 tracks per folder, 5,000 per playlist, 20 folder levels, 50,000 visited entries / Limites: 2.000 faixas por pasta, 5.000 por playlist, 20 níveis de pasta, 50.000 entradas visitadas
+- Repeat stops after 3 tracks in a row end in under 500 ms (no endless loop) / Repetir para após 3 faixas seguidas que terminam em menos de 500 ms (sem laço infinito)
+
 ## [1.1.1] — 2026-11-06
 
 ### Security / Segurança
