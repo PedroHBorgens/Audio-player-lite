@@ -2,6 +2,13 @@
 
 Format based on [Keep a Changelog](https://keepachangelog.com/). / Formato baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/).
 
+## [1.1.1] — 2026-11-06
+
+### Security / Segurança
+
+- ZIP import now counts the real decompressed bytes and aborts at the limit; ZIPs that forge their declared sizes are rejected / A importação de ZIP agora conta os bytes reais descompactados e aborta no limite; ZIPs que falsificam o tamanho declarado são recusados
+- Saved playlists read from storage are validated and their metadata is rendered as text only / Playlists lidas do armazenamento são validadas e seus dados são exibidos só como texto
+
 ## [1.1.0] — 2026-11-06
 
 ### Removed / Removido

@@ -73,7 +73,7 @@ File names and titles go through `oneLine()`, which strips control characters, l
 | `tocador-skin` | id of the chosen skin |
 | `tocador-last` | name of the last opened/saved playlist, reopened on load |
 
-All storage access is wrapped in `try/catch`: if the browser blocks it, the player keeps working without persistence.
+All storage access is wrapped in `try/catch`: if the browser blocks it, the player keeps working without persistence. Data read back from storage is treated as untrusted (another page on the same origin could have written it): lists must have an `items` array, files must be real `Blob`s, durations must be finite numbers, and list metadata is rendered as text.
 
 ## Export and import
 
@@ -91,7 +91,7 @@ Duration is rounded to seconds, or `-1` when unknown.
 
 **ZIP import** — the player:
 
-1. Rejects ZIPs with more than 1,000 entries or more than 2 GB uncompressed; skips entries over 512 MB and `.m3u` files over 1 MB (based on the sizes declared in the ZIP, before inflating).
+1. Rejects ZIPs with more than 1,000 entries or more than 2 GB uncompressed; skips entries over 512 MB and `.m3u` files over 1 MB using the sizes declared in the ZIP as a quick first filter. Because those declared sizes can be forged, every entry is then inflated through a stream (`inflateLimited`) that counts the real bytes and aborts as soon as a per-file or total limit is exceeded.
 2. Ignores directories, `__MACOSX` and hidden files.
 3. Reads the `.m3u`, if any, and orders tracks by it; the rest are appended alphabetically.
 4. Strips the numeric prefix from names and sets the MIME type from the extension.

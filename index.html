@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-UyJpdxXCJTDaeaknKqEkzDeKp2XGn4OrcySY11Gkyw4=' 'sha256-qpSe5B6YyaU5dInT2YsGtcybqrlwzNuBfKHSnt+uGqg='; style-src 'unsafe-inline'; media-src blob:; img-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-UyJpdxXCJTDaeaknKqEkzDeKp2XGn4OrcySY11Gkyw4=' 'sha256-VJFWndwkPoXZNhfLfpiQuBGPYclR+zneI/+eBkGU9XQ='; style-src 'unsafe-inline'; media-src blob:; img-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Tocador Minimalista</title>
 <style>
@@ -398,11 +398,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     try {
       const db = await DB();
       const list = await reqP(db.transaction('lists').objectStore('lists').get(name));
-      if (!list) return;
+      if (!list || !Array.isArray(list.items)) return;
       const fs = db.transaction('files').objectStore('files');
       const recs = await Promise.all(list.items.map(it => reqP(fs.get(it.key))));
       clearAll();
-      list.items.forEach((it,i) => { const r = recs[i]; if (r && r.blob) tracks.push(makeTrack(r.blob, r.fname, it.name, it.dur)); });
+      list.items.forEach((it,i) => { const r = recs[i]; const dur = Number(it && it.dur);
+        if (r && r.blob instanceof Blob) tracks.push(makeTrack(r.blob, r.fname, it && it.name, Number.isFinite(dur) && dur > 0 ? dur : null)); });
       setListName(name);
       try { localStorage.setItem('tocador-last', name); } catch(e){}
       render(); renderSaved();
@@ -431,14 +432,17 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     let lists = [];
     try { const db = await DB(); lists = await reqP(db.transaction('lists').objectStore('lists').getAll()); }
     catch(e){ el.innerHTML = '<div class="note">Este navegador não permite salvar aqui.</div>'; return; }
-    lists.sort((a,b)=>b.updated-a.updated);
+    lists = lists.filter(l => l && typeof l.name === 'string');
+    lists.sort((a,b)=>(+b.updated||0)-(+a.updated||0));
     if (!lists.length){ el.innerHTML = '<div class="note">Nenhuma playlist salva ainda.</div>'; return; }
     el.innerHTML = '';
     lists.forEach(l => {
       const row = document.createElement('div'); row.className = 'sv' + (l.name===listName?' cur':'');
       const d = new Date(l.updated);
-      row.innerHTML = `<span class="nm"></span><span class="mt">${l.items.length} · ${d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})}</span><button class="btn txt" data-a="open">ABRIR</button><button class="btn txt" data-a="del">${confirmDel===l.name?'CONFIRMA?':'×'}</button>`;
-      row.querySelector('.nm').textContent = l.name;
+      const cnt = Array.isArray(l.items) ? l.items.length : 0;
+      row.innerHTML = `<span class="nm"></span><span class="mt"></span><button class="btn txt" data-a="open">ABRIR</button><button class="btn txt" data-a="del">${confirmDel===l.name?'CONFIRMA?':'×'}</button>`;
+      row.querySelector('.nm').textContent = String(l.name);
+      row.querySelector('.mt').textContent = cnt + ' · ' + (isNaN(d) ? '--/--' : d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}));
       row.querySelector('[data-a=open]').onclick = () => { initAudio(); openList(l.name, true); };
       row.querySelector('[data-a=del]').onclick = () => {
         if (confirmDel === l.name){ confirmDel = null; deleteList(l.name); }
@@ -498,8 +502,24 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   };
 
   // ---------- importar ZIP ----------
+  // descompacta contando os bytes de verdade e aborta ao passar do limite
+  // (o tamanho declarado no ZIP pode ser falso)
+  function inflateLimited(f, limit, budget){
+    return new Promise((res, rej) => {
+      const chunks = []; let n = 0, done = false;
+      const fail = e => { if (done) return; done = true; try { st.pause(); } catch(_){} rej(e); };
+      const st = f.internalStream('uint8array');
+      st.on('data', c => {
+        if (done) return;
+        n += c.length; budget.used += c.length;
+        if (n > limit || budget.used > budget.max) return fail(new Error('ZIP recusado: o conteúdo real é maior do que o limite permitido.'));
+        chunks.push(c);
+      }).on('error', fail).on('end', () => { if (!done){ done = true; res(chunks); } }).resume();
+    });
+  }
   async function readZip(file){
     const MAX_ENTRIES = 1000, MAX_FILE = 512*1024*1024, MAX_TOTAL = 2*1024*1024*1024, MAX_LIST = 1024*1024;
+    const budget = { used: 0, max: MAX_TOTAL };
     const zip = await JSZip.loadAsync(file);
     const usize = f => (f._data && f._data.uncompressedSize) || 0;
     let entries = Object.values(zip.files).filter(f => !f.dir && !/(^|\/)(__MACOSX|\.)/.test(f.name));
@@ -510,28 +530,30 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     const audios = entries.filter(f => AUDIO_RE.test(f.name));
     const byName = new Map(audios.map(f => [f.name, f]));
     const base = n => n.split('/').pop();
-    let ordered = [], titles = {};
+    let ordered = []; const titles = new Map();
     const pl = entries.find(f => /\.m3u8?$/i.test(f.name));
     if (pl){
-      const lines = (await pl.async('string')).split(/\r?\n/); let pending = null;
+      const lines = (await new Blob(await inflateLimited(pl, MAX_LIST, budget)).text()).split(/\r?\n/); let pending = null;
       for (const ln of lines){
         const s = ln.trim(); if (!s) continue;
         if (s.startsWith('#EXTINF')){ pending = s.replace(/^#EXTINF:[^,]*,/, ''); continue; }
         if (s.startsWith('#')) continue;
         const f = byName.get(s) || audios.find(a => base(a.name) === base(s));
-        if (f && !ordered.includes(f)){ ordered.push(f); if (pending) titles[f.name] = pending; }
+        if (f && !ordered.includes(f)){ ordered.push(f); if (pending) titles.set(f.name, pending); }
         pending = null;
       }
     }
     audios.filter(a => !ordered.includes(a)).sort((a,b)=>a.name.localeCompare(b.name)).forEach(a => ordered.push(a));
     const out = [];
+    try {
     for (const f of ordered){
       const ext = (f.name.match(/\.(\w+)$/)||[])[1].toLowerCase();
       const MIME = {mp3:'audio/mpeg',wav:'audio/wav',ogg:'audio/ogg',flac:'audio/flac',m4a:'audio/mp4',aac:'audio/aac',opus:'audio/ogg',webm:'audio/webm'};
-      const blob = new Blob([await f.async('arraybuffer')], { type: MIME[ext] || '' });
+      const blob = new Blob(await inflateLimited(f, MAX_FILE, budget), { type: MIME[ext] || '' });
       const fname = base(f.name).replace(/^\d+\s*-\s*/, '');
-      out.push(makeTrack(blob, fname, titles[f.name]));
+      out.push(makeTrack(blob, fname, titles.get(f.name)));
     }
+    } catch(e){ out.forEach(t => URL.revokeObjectURL(t.url)); throw e; }
     if (!listName) setListName(clean(file.name));
     return out;
   }

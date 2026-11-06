@@ -18,7 +18,8 @@ Tocador Minimalista runs entirely in the browser. There is no server, no account
 | Content Security Policy | `default-src 'none'`; scripts allowed only by SHA-256 hash (no `'unsafe-inline'` for scripts); `connect-src 'none'` blocks any data exfiltration; `form-action`, `base-uri`, `object-src` set to `'none'` |
 | HTML injection (XSS) | User-controlled strings (file names, titles, playlist names) are always rendered with `textContent` |
 | Name spoofing | Control characters, line breaks and bidi override characters (e.g. U+202E) are stripped; names are capped at 200 characters |
-| Malicious ZIP | Max 1,000 entries, 512 MB per file, 2 GB total, 1 MB per M3U, checked before inflating. Nothing is written to disk, so path traversal does not apply |
+| Malicious ZIP | Max 1,000 entries, 512 MB per file, 2 GB total, 1 MB per M3U. Declared sizes are only a first filter: real bytes are counted while inflating and the import aborts when a limit is exceeded, so a ZIP that lies about its sizes is rejected too. Nothing is written to disk, so path traversal does not apply |
+| Tampered storage | Playlists read from IndexedDB are validated (array of items, real `Blob`s, finite durations) and their metadata is rendered as text, since another page on the same origin could have written them |
 | Exported M3U | Names are sanitized so a crafted file name cannot inject extra lines (e.g. remote URLs) into the playlist |
 | Device permissions | The microphone recorder was removed in 1.1.0. The player asks for no permissions, and `Permissions-Policy` disables microphone, camera, geolocation, payment and USB |
 | Storage | `navigator.storage.persist()` requested to avoid silent eviction; all storage calls fail safely |
@@ -57,7 +58,8 @@ O Tocador Minimalista roda inteiramente no navegador. Não há servidor, conta n
 | Política de segurança (CSP) | `default-src 'none'`; scripts liberados só por hash SHA-256 (sem `'unsafe-inline'` para scripts); `connect-src 'none'` impede envio de dados; `form-action`, `base-uri` e `object-src` como `'none'` |
 | Injeção de HTML (XSS) | Textos controlados pelo usuário (nomes de arquivos, títulos, nomes de playlists) são sempre exibidos com `textContent` |
 | Nomes falsificados | Caracteres de controle, quebras de linha e caracteres de inversão de direção (ex.: U+202E) são removidos; nomes limitados a 200 caracteres |
-| ZIP malicioso | Máximo de 1.000 entradas, 512 MB por arquivo, 2 GB no total e 1 MB por M3U, verificados antes de descompactar. Nada é gravado em disco, então *path traversal* não se aplica |
+| ZIP malicioso | Máximo de 1.000 entradas, 512 MB por arquivo, 2 GB no total e 1 MB por M3U. O tamanho declarado no ZIP é só um primeiro filtro: os bytes reais são contados durante a descompactação e a importação é abortada ao passar do limite, então um ZIP que mente o tamanho também é recusado. Nada é gravado em disco, então *path traversal* não se aplica |
+| Armazenamento adulterado | As playlists lidas do IndexedDB são validadas (lista de itens, `Blob` de verdade, durações numéricas) e os dados delas são exibidos como texto, já que outra página da mesma origem pode tê-las escrito |
 | M3U exportado | Nomes higienizados para que um nome de arquivo malicioso não injete linhas extras (como URLs remotas) na playlist |
 | Permissões do aparelho | O gravador pelo microfone foi removido na 1.1.0. O tocador não pede nenhuma permissão, e a `Permissions-Policy` desativa microfone, câmera, localização, pagamento e USB |
 | Armazenamento | Pedido de `navigator.storage.persist()` para evitar exclusão silenciosa; falhas de armazenamento não quebram o tocador |

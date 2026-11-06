@@ -71,7 +71,7 @@ Nomes de arquivos e títulos passam por `oneLine()`: remove caracteres de contro
 | `tocador-skin` | id da skin escolhida |
 | `tocador-last` | nome da última playlist aberta/salva, reaberta ao carregar |
 
-Todo acesso a armazenamento está protegido por `try/catch`: se o navegador bloquear, o tocador continua funcionando sem salvar.
+Todo acesso a armazenamento está protegido por `try/catch`: se o navegador bloquear, o tocador continua funcionando sem salvar. Os dados lidos do armazenamento são tratados como não confiáveis (outra página da mesma origem pode tê-los escrito): a lista precisa ter um array `items`, os arquivos precisam ser `Blob` de verdade, as durações precisam ser números finitos e os dados da lista são exibidos como texto.
 
 ## Exportação e importação
 
@@ -89,7 +89,7 @@ A duração vai arredondada em segundos, ou `-1` se desconhecida.
 
 **Importação de ZIP** — o tocador:
 
-1. Recusa ZIPs com mais de 1.000 entradas ou mais de 2 GB descompactados; ignora entradas acima de 512 MB e `.m3u` acima de 1 MB (usando o tamanho declarado no ZIP, antes de descompactar).
+1. Recusa ZIPs com mais de 1.000 entradas ou mais de 2 GB descompactados; ignora entradas acima de 512 MB e `.m3u` acima de 1 MB usando o tamanho declarado no ZIP como um primeiro filtro rápido. Como esse tamanho declarado pode ser falsificado, cada entrada é descompactada por um fluxo (`inflateLimited`) que conta os bytes reais e aborta assim que passa do limite por arquivo ou do total.
 2. Ignora pastas, `__MACOSX` e arquivos ocultos.
 3. Lê o `.m3u`, se houver, e ordena as faixas por ele; o resto entra em ordem alfabética.
 4. Remove o prefixo numérico do nome e define o tipo MIME pela extensão.
