@@ -9,7 +9,7 @@ O Tocador Minimalista roda inteiramente no navegador. Não há servidor, login n
 | Área | Proteção |
 |---|---|
 | Código de terceiros | JSZip 3.10.1 embutido no arquivo (sem CDN); versão sem CVEs conhecidas abertas |
-| Conexões externas | CSP com `connect-src 'none'`, `default-src 'none'`; apenas Google Fonts liberado |
+| Conexões externas | Nenhum recurso de terceiros (fonte do sistema, JSZip embutido); CSP com `default-src 'none'` e `connect-src 'none'` |
 | Injeção de HTML (XSS) | Nomes de faixas e playlists sempre inseridos como texto (`textContent`) |
 | ZIP malicioso | Limites de 1.000 entradas, 512 MB por arquivo, 2 GB no total e 1 MB para a lista M3U; nada é gravado em disco, então path traversal não se aplica |
 | M3U exportado | Caracteres de controle e quebras de linha removidos dos nomes |
@@ -22,7 +22,6 @@ O Tocador Minimalista roda inteiramente no navegador. Não há servidor, login n
 - **Dados sem criptografia**: playlists e gravações ficam no IndexedDB do navegador. Quem tiver acesso ao seu perfil do navegador consegue lê-los.
 - **Arquivo aberto do disco (`file://`)**: o navegador pode compartilhar o armazenamento entre páginas locais. O tocador exibe um aviso nesse caso. Prefira usar pela versão publicada em `https://`.
 - **GitHub Pages** não permite cabeçalhos HTTP personalizados, então `frame-ancestors` (proteção contra clickjacking) não se aplica lá.
-- **Google Fonts** recebe o IP de quem abre a página.
 
 ## Reportar uma vulnerabilidade
 

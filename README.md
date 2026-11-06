@@ -48,9 +48,9 @@ O arquivo `_headers` não tem efeito no GitHub Pages; ele aplica cabeçalhos de 
 
 ## Privacidade e segurança
 
-- Nenhum dado é enviado para servidores: a página bloqueia conexões externas por política de segurança (CSP)
+- **Zero contato com terceiros**: a página não carrega nada de fora (nem fontes, nem bibliotecas) e bloqueia qualquer conexão externa por política de segurança (CSP)
+- Usa a fonte monoespaçada do próprio sistema
 - As playlists e gravações ficam no armazenamento local do navegador (IndexedDB), sem criptografia
-- A única requisição externa é a fonte JetBrains Mono, do Google Fonts
 
 Detalhes e como reportar problemas: [SECURITY.md](SECURITY.md).
 

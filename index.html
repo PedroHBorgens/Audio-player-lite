@@ -3,11 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; media-src blob:; img-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; media-src blob:; img-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Tocador Minimalista · com gravação</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#0e0f11; --panel:#16181b; --panel2:#1c1f23; --line:#26292e;
@@ -30,7 +28,7 @@
   .sk span{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
   .sk.on span{color:var(--accent)}
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px}
+  html,body{background:var(--bg);color:var(--text);font-family:ui-monospace,'SF Mono','Cascadia Mono','Segoe UI Mono',Menlo,Consolas,'Liberation Mono','DejaVu Sans Mono',monospace;font-size:12px}
   body{min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:32px 12px}
   .wrap{width:100%;max-width:400px;display:flex;flex-direction:column;gap:8px}
   .win{background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden}
