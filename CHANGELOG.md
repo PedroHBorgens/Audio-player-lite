@@ -2,6 +2,20 @@
 
 Format based on [Keep a Changelog](https://keepachangelog.com/). / Formato baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/).
 
+## [1.3.0] — 2026-11-06
+
+### Added / Adicionado
+
+- Interface language selector **PT / EN** (Brazilian Portuguese and English), remembered by the browser and following the browser language on the first visit / Seletor de idioma da interface **PT / EN** (português do Brasil e inglês), salvo no navegador e seguindo o idioma do navegador na primeira visita
+
+### Fixed / Corrigido
+
+- Track durations were not read for files added directly (regression from 1.2.0) / A duração das faixas não era lida para arquivos adicionados diretamente (regressão da 1.2.0)
+
+### Security / Segurança
+
+- Translations reviewed: HTML-inserted texts are fixed and placeholder-free; stored language strictly validated / Traduções revisadas: textos inseridos como HTML são fixos e sem marcadores; idioma salvo validado de forma estrita
+
 ## [1.2.1] — 2026-11-06
 
 ### Changed / Alterado

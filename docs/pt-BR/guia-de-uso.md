@@ -4,6 +4,7 @@
 
 ## Sumário
 
+- [Idioma](#idioma)
 1. [Abrindo o tocador](#1-abrindo-o-tocador)
 2. [Adicionando músicas](#2-adicionando-músicas)
 3. [Controles de reprodução](#3-controles-de-reprodução)
@@ -16,6 +17,10 @@
 10. [Atalhos de teclado](#10-atalhos-de-teclado)
 11. [Privacidade: onde ficam seus dados](#11-privacidade-onde-ficam-seus-dados)
 12. [Solução de problemas](#12-solução-de-problemas)
+
+## Idioma
+
+Toque em **PT** ou **EN** no canto superior direito da janela principal para trocar toda a interface entre português do Brasil e inglês — botões, dicas, mensagens, nomes de skins e de presets. A escolha fica salva no navegador; na primeira visita, o tocador segue o idioma do navegador (português se ele estiver em português, inglês nos demais casos).
 
 ## 1. Abrindo o tocador
 

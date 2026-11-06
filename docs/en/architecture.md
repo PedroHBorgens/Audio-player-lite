@@ -23,7 +23,7 @@ index.html
      └── drag and drop, keyboard shortcuts
 ```
 
-UI strings are in Portuguese (Brazil); identifiers and comments are mostly Portuguese as well.
+Code identifiers and comments are mostly in Portuguese. The UI is translated (see [Interface language](#interface-language)).
 
 ## Audio graph
 
@@ -51,10 +51,18 @@ Playback uses one `HTMLAudioElement`. On the first user interaction (browsers re
 Each track is an object `{ name, fname, blob, url, dur, size }`.
 
 - **Repeat** has three modes (`repeat = 'off' | 'all' | 'one'`). In `one`, the `ended` event seeks to 0 and plays again; in `all`, the track after the last one is the first. If 3 tracks in a row end less than 500 ms after starting, playback stops (prevents endless loops with empty files).
-- **Folders**: `+ PASTA` uses an `<input type="file" webkitdirectory>`; dropped folders are walked with `webkitGetAsEntry()` / `readEntries()` (up to 20 levels deep and 50,000 visited entries). Only files with an audio extension are kept, hidden items are skipped, and files are sorted with `localeCompare` and `numeric: true`, up to 2,000 per folder. The whole playlist is capped at 5,000 tracks.
+- **Folders**: `+ FOLDER` (`+ PASTA`) uses an `<input type="file" webkitdirectory>`; dropped folders are walked with `webkitGetAsEntry()` / `readEntries()` (up to 20 levels deep and 50,000 visited entries). Only files with an audio extension are kept, hidden items are skipped, and files are sorted with `localeCompare` and `numeric: true`, up to 2,000 per folder. The whole playlist is capped at 5,000 tracks.
 - **Duration** is read through a queue with at most 4 metadata-only `<audio>` elements at a time (10 s timeout each), and the list is re-rendered at most once per frame. Without this, a large folder opened thousands of readers at once and froze the tab. `url` is an object URL (`blob:`) for the file, revoked when the track is removed or the list is cleared. Duration is read by a helper metadata-only `<audio>` element.
 
 File names and titles go through `oneLine()`, which strips control characters, line breaks and bidirectional-text override characters, and truncates to 200 characters. Everything shown on screen is set with `textContent`, never `innerHTML` with user data.
+
+## Interface language
+
+- All UI text lives in the `I18N` dictionary (`pt` and `en`, same keys) at the top of the player script, read through `T(key, vars)`. `{name}`-style placeholders are filled with a replacer function, so values are inserted once and never re-parsed.
+- Static elements carry `data-i18n` (text), `data-i18n-title`, `data-i18n-ph` (placeholder), `data-i18n-aria` or `data-i18n-html`. `applyLang()` refreshes them plus everything drawn by code (playlist, saved lists, skins, presets, repeat and balance labels, warnings) and clears transient messages.
+- `data-i18n-html` and every string concatenated into `innerHTML` are fixed dictionary texts **without placeholders**; anything that includes user data goes through `textContent`.
+- The language is stored in `localStorage` (`tocador-lang`) and accepted only if it is exactly `pt` or `en`; otherwise the browser language decides. `<html lang>` follows the choice.
+- The Claude-hosted version is generated from `index.html` by removing the CSP meta tag (the host applies its own policy), so both versions share the same code.
 
 ## Storage
 

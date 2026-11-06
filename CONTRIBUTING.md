@@ -31,9 +31,10 @@ Thanks for your interest! Bug reports, ideas and pull requests are welcome.
 
 ### Test checklist
 
-- [ ] Add files with **+ ADD**, a folder with **+ PASTA**, and files/folders by drag and drop; play, pause, stop, previous/next, seek
+- [ ] Add files with **+ ADD**, a folder with **+ FOLDER**, and files/folders by drag and drop; play, pause, stop, previous/next, seek
 - [ ] Repeat: off → playlist → track; in track mode the song restarts
-- [ ] Equalizer presets, PRE, ON/OFF; balance snaps to center and the label recenters it; all 6 skins (including the light **Papel** skin)
+- [ ] Equalizer presets, PRE, ON/OFF; balance snaps to center and the label recenters it; all 6 skins (including the light **Paper** skin)
+- [ ] Switch **PT / EN**: every visible text, tooltip and message changes; reload keeps the choice
 - [ ] Save, reload the page, reopen and delete a playlist
 - [ ] Export ZIP and M3U; import the exported ZIP back
 - [ ] Browser console shows no errors and no CSP violations
@@ -46,6 +47,7 @@ Thanks for your interest! Bug reports, ideas and pull requests are welcome.
 - Pass every file name or title through `oneLine()`.
 - Wrap storage calls (`localStorage`, `IndexedDB`) in `try/catch`.
 - Do not add dependencies loaded from a CDN. If a library is essential, embed it, record its source and SHA-256 in `THIRD-PARTY-NOTICES.md`, and check its license is compatible.
+- New UI text goes into **both** `I18N.pt` and `I18N.en` with the same key. Never put `{placeholders}` in a string that is inserted as HTML.
 - Do not add features that request device permissions (microphone, camera, location). The recorder was removed on purpose to keep the attack surface minimal.
 
 ### Adding a skin
@@ -93,6 +95,7 @@ Obrigado pelo interesse! Relatos de bugs, ideias e pull requests são bem-vindos
 - [ ] Adicionar arquivos pelo **+ ADD**, uma pasta pelo **+ PASTA**, e arquivos/pastas arrastando; tocar, pausar, parar, anterior/próxima, barra de progresso
 - [ ] Repetir: desligado → lista → faixa; no modo faixa a música recomeça
 - [ ] Presets do equalizador, PRE, ON/OFF; balanço trava no centro e o rótulo recentraliza; as 6 skins (inclusive a clara, **Papel**)
+- [ ] Trocar **PT / EN**: todo texto visível, dica e mensagem muda; recarregar mantém a escolha
 - [ ] Salvar, recarregar a página, reabrir e apagar uma playlist
 - [ ] Exportar ZIP e M3U; importar de volta o ZIP exportado
 - [ ] Console do navegador sem erros e sem violações de CSP
@@ -105,6 +108,7 @@ Obrigado pelo interesse! Relatos de bugs, ideias e pull requests são bem-vindos
 - Passe todo nome de arquivo ou título por `oneLine()`.
 - Proteja acessos a armazenamento (`localStorage`, `IndexedDB`) com `try/catch`.
 - Não adicione dependências carregadas de CDN. Se uma biblioteca for essencial, embuta-a, registre origem e SHA-256 em `THIRD-PARTY-NOTICES.md` e confira se a licença é compatível.
+- Todo texto novo da interface vai para `I18N.pt` **e** `I18N.en`, com a mesma chave. Nunca use `{marcadores}` em um texto inserido como HTML.
 - Não adicione recursos que peçam permissões do aparelho (microfone, câmera, localização). O gravador foi removido de propósito para manter a superfície de ataque mínima.
 
 ### Criando uma skin

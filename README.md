@@ -8,8 +8,6 @@ A minimalist, Winamp-inspired audio player that runs entirely in your browser. I
 
 > **Free for personal use.** Licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE). Commercial use requires written permission — see [License](#license).
 
-> The player's interface is in Portuguese (Brazil). This documentation is available in English and Portuguese.
-
 ## Features
 
 | | |
@@ -23,6 +21,7 @@ A minimalist, Winamp-inspired audio player that runs entirely in your browser. I
 | **Saved playlists** | Named playlists stored in the browser together with the audio; the last one reopens automatically |
 | **Export / import** | ZIP with the audio files plus `playlist.m3u` (opens in Winamp, VLC, foobar2000…), or the M3U list alone; ZIPs can be imported back |
 | **Formats** | MP3, WAV, OGG, FLAC, M4A, AAC, OPUS, WEBM (whatever your browser can decode) |
+| **Two languages** | English and Brazilian Portuguese interface, switchable at any time (**PT / EN** button); follows the browser's language on the first visit |
 | **Privacy** | Zero third-party requests: no CDN, no web fonts, no analytics; external connections are blocked by a strict Content Security Policy |
 
 ## Quick start
@@ -31,7 +30,7 @@ A minimalist, Winamp-inspired audio player that runs entirely in your browser. I
 
 **Use it offline** — download [`index.html`](index.html) and open it in Chrome, Edge, Firefox or Safari.
 
-Then tap **+ ADD** for files or **+ PASTA** for a whole folder (or drag files or folders onto the window) and press play.
+Then tap **+ ADD** for files or **+ FOLDER** for a whole folder (or drag files or folders onto the window) and press play.
 
 ### Keyboard shortcuts
 

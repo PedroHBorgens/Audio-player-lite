@@ -49,10 +49,18 @@ A reprodução usa um único `HTMLAudioElement`. Na primeira interação do usu�
 Cada faixa é um objeto `{ name, fname, blob, url, dur, size }`.
 
 - **Repetir** tem três modos (`repeat = 'off' | 'all' | 'one'`). Em `one`, o evento `ended` volta a posição para 0 e toca de novo; em `all`, a próxima faixa depois da última é a primeira. Se 3 faixas seguidas terminam menos de 500 ms depois de começar, a reprodução para (evita laço sem fim com arquivos vazios).
-- **Pastas**: `+ PASTA` usa um `<input type="file" webkitdirectory>`; pastas arrastadas são percorridas com `webkitGetAsEntry()` / `readEntries()` (até 20 níveis e 50.000 entradas visitadas). Só entram arquivos com extensão de áudio, sem itens ocultos, ordenados por `localeCompare` com `numeric: true`, até 2.000 por pasta. A playlist inteira tem teto de 5.000 faixas.
+- **Pastas**: `+ PASTA` (`+ FOLDER`) usa um `<input type="file" webkitdirectory>`; pastas arrastadas são percorridas com `webkitGetAsEntry()` / `readEntries()` (até 20 níveis e 50.000 entradas visitadas). Só entram arquivos com extensão de áudio, sem itens ocultos, ordenados por `localeCompare` com `numeric: true`, até 2.000 por pasta. A playlist inteira tem teto de 5.000 faixas.
 - **Duração** é lida em uma fila com no máximo 4 elementos `<audio>` de metadados ao mesmo tempo (com tempo limite de 10 s cada), e a lista é redesenhada no máximo uma vez por quadro. Sem isso, uma pasta grande abria milhares de leitores de uma vez e travava a aba. O `url` é um *object URL* (`blob:`) do arquivo, revogado quando a faixa é removida ou a lista é limpa. A duração é lida por um elemento `<audio>` auxiliar só de metadados.
 
 Nomes de arquivos e títulos passam por `oneLine()`: remove caracteres de controle, quebras de linha e caracteres de direção de texto (bidi) e limita a 200 caracteres. Tudo que aparece na tela usa `textContent`, nunca `innerHTML` com dados do usuário.
+
+## Idioma da interface
+
+- Todo texto da interface fica no dicionário `I18N` (`pt` e `en`, com as mesmas chaves), no começo do script do tocador, lido por `T(chave, variáveis)`. Marcadores como `{name}` são preenchidos por uma função de substituição, então os valores entram uma vez só e nunca são reinterpretados.
+- Elementos fixos têm `data-i18n` (texto), `data-i18n-title`, `data-i18n-ph` (placeholder), `data-i18n-aria` ou `data-i18n-html`. `applyLang()` atualiza esses elementos e tudo que o código desenha (playlist, listas salvas, skins, presets, rótulos de repetir e balanço, avisos) e limpa mensagens temporárias.
+- `data-i18n-html` e todo texto concatenado em `innerHTML` são textos fixos do dicionário **sem marcadores**; qualquer coisa com dados do usuário passa por `textContent`.
+- O idioma fica no `localStorage` (`tocador-lang`) e só é aceito se for exatamente `pt` ou `en`; caso contrário, decide o idioma do navegador. O `<html lang>` acompanha a escolha.
+- A versão hospedada no Claude é gerada a partir do `index.html`, removendo a meta tag de CSP (a plataforma aplica a própria política), então as duas versões têm o mesmo código.
 
 ## Armazenamento
 

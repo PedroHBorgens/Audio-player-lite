@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-UyJpdxXCJTDaeaknKqEkzDeKp2XGn4OrcySY11Gkyw4=' 'sha256-ejHa1JPRmN3vVjaf7nGzG0foaS869bM3XNC7tatR1Qg='; style-src 'unsafe-inline'; media-src blob:; img-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-UyJpdxXCJTDaeaknKqEkzDeKp2XGn4OrcySY11Gkyw4=' 'sha256-4AoZ0cksm9XaYNs1glza4QH6tnN39s6YC84XTOanaus='; style-src 'unsafe-inline'; media-src blob:; img-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Tocador Minimalista</title>
 <style>
@@ -37,6 +37,10 @@
   .bar .dots i{width:7px;height:7px;border-radius:50%;background:var(--line);display:block}
   .bar button{all:unset;cursor:pointer;color:var(--dim);font-size:10px;letter-spacing:.12em}
   .bar button:hover,.bar button.on{color:var(--accent)}
+  .barr{display:flex;align-items:center;gap:10px}
+  .lang{display:flex;border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .lang button{padding:1px 5px;letter-spacing:.08em}
+  .lang button.on{background:var(--line);color:var(--accent)}
 
   /* display */
   .display{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:10px;}
@@ -150,33 +154,33 @@
 
   <!-- MAIN -->
   <div class="win">
-    <div class="bar"><div class="dots"><i></i><i></i><i></i></div><span>tocador</span><span id="kbps">— kbps</span></div>
+    <div class="bar"><div class="dots"><i></i><i></i><i></i></div><span data-i18n="bar_player">tocador</span><span class="barr"><span id="kbps">— kbps</span><span class="lang" role="group" data-i18n-title="lang_title" title="Idioma / Language"><button data-lang="pt">PT</button><button data-lang="en">EN</button></span></span></div>
     <div class="display">
-      <div class="lcd time" id="timeBox" title="Clique: tempo decorrido / restante">
+      <div class="lcd time" id="timeBox" data-i18n-title="t_time" title="Clique: tempo decorrido / restante">
         <div class="t" id="time">00:00</div>
         <div class="st"><span id="state">■ STOP</span><b id="mode"></b></div>
       </div>
       <div class="right">
         <div class="lcd marquee"><span id="title">Nenhuma faixa carregada</span></div>
-        <div class="lcd"><canvas id="viz" title="Clique: barras / osciloscópio / desligado"></canvas></div>
+        <div class="lcd"><canvas id="viz" data-i18n-title="t_viz" title="Clique: barras / osciloscópio / desligado"></canvas></div>
       </div>
     </div>
     <div class="seek"><input type="range" id="seek" min="0" max="1000" value="0" step="1"></div>
     <div class="controls">
-      <button class="btn" id="prev" title="Anterior (Z)"><svg viewBox="0 0 12 12"><path d="M2 1h1.6v10H2zM11 1v10L4 6z"/></svg></button>
-      <button class="btn" id="play" title="Tocar / Pausar (X / Espaço)"><svg viewBox="0 0 12 12" id="playIcon"><path d="M2 1l9 5-9 5z"/></svg></button>
-      <button class="btn" id="stop" title="Parar (V)"><svg viewBox="0 0 12 12"><path d="M2 2h8v8H2z"/></svg></button>
-      <button class="btn" id="next" title="Próxima (B)"><svg viewBox="0 0 12 12"><path d="M8.4 1H10v10H8.4zM1 1v10l7-5z"/></svg></button>
-      <button class="btn" id="open" title="Abrir arquivos (L)"><svg viewBox="0 0 12 12"><path d="M6 1l5 5H8v3H4V6H1zM1 10h10v1.5H1z"/></svg></button>
+      <button class="btn" id="prev" data-i18n-title="t_prev" title="Anterior (Z)"><svg viewBox="0 0 12 12"><path d="M2 1h1.6v10H2zM11 1v10L4 6z"/></svg></button>
+      <button class="btn" id="play" data-i18n-title="t_play" title="Tocar / Pausar (X / Espaço)"><svg viewBox="0 0 12 12" id="playIcon"><path d="M2 1l9 5-9 5z"/></svg></button>
+      <button class="btn" id="stop" data-i18n-title="t_stop" title="Parar (V)"><svg viewBox="0 0 12 12"><path d="M2 2h8v8H2z"/></svg></button>
+      <button class="btn" id="next" data-i18n-title="t_next" title="Próxima (B)"><svg viewBox="0 0 12 12"><path d="M8.4 1H10v10H8.4zM1 1v10l7-5z"/></svg></button>
+      <button class="btn" id="open" data-i18n-title="t_open" title="Abrir arquivos (L)"><svg viewBox="0 0 12 12"><path d="M6 1l5 5H8v3H4V6H1zM1 10h10v1.5H1z"/></svg></button>
       <div class="grow"></div>
-      <button class="btn txt" id="shuf" title="Aleatório (S)">SHUF</button>
+      <button class="btn txt" id="shuf" data-i18n-title="t_shuf" title="Aleatório (S)">SHUF</button>
       <button class="btn txt" id="rep" title="Repetir: desligado (R alterna)">REP</button>
     </div>
     <div class="controls" style="padding-top:0">
       <div class="vol" style="flex:1;width:auto"><label>VOL</label><input type="range" id="vol" min="0" max="100" value="80"></div>
-      <div class="balbox"><button class="ballbl c" id="balLbl" title="Toque para centralizar">BAL ●</button><div class="baltrack c" id="balTrack"><input type="range" id="bal" min="-100" max="100" value="0" step="1" aria-label="Balanço"></div></div>
-      <button class="btn txt" id="eqBtn" title="Equalizador (E)">EQ</button>
-      <button class="btn txt" id="skBtn" title="Skins (K troca)">SKIN</button>
+      <div class="balbox"><button class="ballbl c" id="balLbl" data-i18n-title="t_bal" title="Toque para centralizar">BAL ●</button><div class="baltrack c" id="balTrack"><input type="range" id="bal" min="-100" max="100" value="0" step="1" data-i18n-aria="a_bal" aria-label="Balanço"></div></div>
+      <button class="btn txt" id="eqBtn" data-i18n-title="t_eq" title="Equalizador (E)">EQ</button>
+      <button class="btn txt" id="skBtn" data-i18n-title="t_skin" title="Skins (K troca)">SKIN</button>
     </div>
   </div>
 
@@ -188,11 +192,11 @@
 
   <!-- EQUALIZER -->
   <div class="win" id="eqWin">
-    <div class="bar"><span>equalizador</span><button id="eqOn" class="on">ON</button></div>
+    <div class="bar"><span data-i18n="bar_eq">equalizador</span><button id="eqOn" class="on">ON</button></div>
     <div class="eq show" style="display:block">
       <div class="eqhead">
         <select id="preset"></select>
-        <button class="btn txt" id="eqReset">ZERAR</button>
+        <button class="btn txt" id="eqReset" data-i18n="eq_reset">ZERAR</button>
       </div>
       <div class="bands" id="bands"></div>
     </div>
@@ -200,37 +204,37 @@
 
   <!-- PLAYLIST -->
   <div class="win" id="plWin">
-    <div class="bar"><span id="plTitle">playlist</span><button id="clear">LIMPAR</button></div>
+    <div class="bar"><span id="plTitle">playlist</span><button id="clear" data-i18n="clear">LIMPAR</button></div>
     <div class="panel" id="savePanel">
-      <div class="lbl">salvar playlist atual</div>
-      <div class="row"><input class="txt" id="plName" placeholder="Nome da playlist" maxlength="60"><button class="btn txt" id="doSave">SALVAR</button></div>
-      <div class="lbl" style="margin-top:4px">playlists salvas</div>
+      <div class="lbl" data-i18n="save_lbl">salvar playlist atual</div>
+      <div class="row"><input class="txt" id="plName" data-i18n-ph="ph_name" placeholder="Nome da playlist" maxlength="60"><button class="btn txt" id="doSave" data-i18n="save">SALVAR</button></div>
+      <div class="lbl" style="margin-top:4px" data-i18n="saved_lbl">playlists salvas</div>
       <div class="saved" id="saved"></div>
-      <div class="note">As playlists (com as músicas) ficam guardadas neste navegador. A última aberta volta sozinha quando você reabrir o tocador.</div>
+      <div class="note" data-i18n="save_note">As playlists (com as músicas) ficam guardadas neste navegador. A última aberta volta sozinha quando você reabrir o tocador.</div>
       <div class="note" id="fileWarn" style="display:none;color:#e0a34a"></div>
       <div class="msg" id="saveMsg"></div>
     </div>
     <div class="panel" id="expPanel">
-      <div class="lbl">exportar playlist</div>
+      <div class="lbl" data-i18n="exp_lbl">exportar playlist</div>
       <div class="row">
-        <button class="btn txt" id="expZip">ZIP · MÚSICAS + M3U</button>
-        <button class="btn txt" id="expM3u">SÓ A LISTA (M3U)</button>
+        <button class="btn txt" id="expZip" data-i18n="exp_zip">ZIP · MÚSICAS + M3U</button>
+        <button class="btn txt" id="expM3u" data-i18n="exp_m3u">SÓ A LISTA (M3U)</button>
       </div>
-      <div class="note"><b style="color:var(--text);font-weight:400">ZIP</b>: leva as músicas e um <i>playlist.m3u</i> na ordem certa — abre no Winamp, VLC, foobar, e pode ser importado de volta aqui pelo + ADD.<br><b style="color:var(--text);font-weight:400">Só a lista</b>: arquivo texto no formato M3U (salvo como .txt — renomeie para .m3u se quiser usar em outro player).</div>
+      <div class="note" data-i18n-html="exp_note"><b style="color:var(--text);font-weight:400">ZIP</b>: leva as músicas e um <i>playlist.m3u</i> na ordem certa — abre no Winamp, VLC, foobar, e pode ser importado de volta aqui pelo + ADD.<br><b style="color:var(--text);font-weight:400">Só a lista</b>: arquivo texto no formato M3U (salvo como .txt — renomeie para .m3u se quiser usar em outro player).</div>
       <div class="msg" id="expMsg"></div>
     </div>
     <div class="pl" id="pl"></div>
     <div class="msg plmsg" id="plMsg"></div>
     <div class="plfoot">
-      <button class="btn txt" id="add" title="Adicionar arquivos (L)">+ ADD</button>
-      <button class="btn txt" id="addDir" title="Adicionar uma pasta inteira (P)">+ PASTA</button>
-      <button class="btn txt" id="listsBtn">LISTAS</button>
-      <button class="btn txt" id="expBtn">EXPORTAR</button>
+      <button class="btn txt" id="add" data-i18n-title="t_add" title="Adicionar arquivos (L)">+ ADD</button>
+      <button class="btn txt" id="addDir" data-i18n-title="t_addDir" title="Adicionar uma pasta inteira (P)" data-i18n="add_dir">+ PASTA</button>
+      <button class="btn txt" id="listsBtn" data-i18n="lists">LISTAS</button>
+      <button class="btn txt" id="expBtn" data-i18n="export">EXPORTAR</button>
       <span class="info" id="plInfo">0 faixas</span>
     </div>
   </div>
 
-  <div class="help">
+  <div class="help" data-i18n-html="help">
     <kbd>Z</kbd> ant · <kbd>X</kbd> play · <kbd>C</kbd> pausa · <kbd>V</kbd> stop · <kbd>B</kbd> próx · <kbd>←</kbd><kbd>→</kbd> 5s · <kbd>↑</kbd><kbd>↓</kbd> vol · <kbd>K</kbd> skin · <kbd>R</kbd> repetir · <kbd>P</kbd> pasta<br>
     arraste arquivos ou pastas de áudio para qualquer lugar da janela
   </div>
@@ -256,6 +260,15 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 <script>
 (() => {
   const $ = id => document.getElementById(id);
+
+  // ---------- idioma (pt-BR / en) ----------
+  const I18N = { pt: {"bar_player": "tocador", "bar_eq": "equalizador", "lang_title": "Idioma / Language", "t_time": "Clique: tempo decorrido / restante", "t_viz": "Clique: barras / osciloscópio / desligado", "t_prev": "Anterior (Z)", "t_play": "Tocar / Pausar (X / Espaço)", "t_stop": "Parar (V)", "t_next": "Próxima (B)", "t_open": "Abrir arquivos (L)", "t_shuf": "Aleatório (S)", "t_bal": "Toque para centralizar", "a_bal": "Balanço", "t_eq": "Equalizador (E)", "t_skin": "Skins (K troca)", "t_add": "Adicionar arquivos (L)", "t_addDir": "Adicionar uma pasta inteira (P)", "t_remove": "Remover", "eq_reset": "ZERAR", "clear": "LIMPAR", "save_lbl": "salvar playlist atual", "ph_name": "Nome da playlist", "save": "SALVAR", "saved_lbl": "playlists salvas", "save_note": "As playlists (com as músicas) ficam guardadas neste navegador. A última aberta volta sozinha quando você reabrir o tocador.", "exp_lbl": "exportar playlist", "exp_zip": "ZIP · MÚSICAS + M3U", "exp_m3u": "SÓ A LISTA (M3U)", "exp_note": "<b style=\"color:var(--text);font-weight:400\">ZIP</b>: leva as músicas e um <i>playlist.m3u</i> na ordem certa — abre no Winamp, VLC, foobar, e pode ser importado de volta aqui pelo + ADD.<br><b style=\"color:var(--text);font-weight:400\">Só a lista</b>: arquivo texto no formato M3U (salvo como .txt — renomeie para .m3u se quiser usar em outro player).", "add_dir": "+ PASTA", "lists": "LISTAS", "export": "EXPORTAR", "help": "<kbd>Z</kbd> ant · <kbd>X</kbd> play · <kbd>C</kbd> pausa · <kbd>V</kbd> stop · <kbd>B</kbd> próx · <kbd>←</kbd><kbd>→</kbd> 5s · <kbd>↑</kbd><kbd>↓</kbd> vol · <kbd>K</kbd> skin · <kbd>R</kbd> repetir · <kbd>P</kbd> pasta<br>\n    arraste arquivos ou pastas de áudio para qualquer lugar da janela", "no_track": "Nenhuma faixa carregada", "untitled": "Sem título", "track_file": "faixa", "empty": "Sem faixas.<br><b>Toque em + ADD</b> ou <b>+ PASTA</b> para uma pasta inteira — ou arraste arquivos e pastas aqui.<br>MP3 · WAV · OGG · FLAC · M4A", "track1": "1 faixa", "tracksN": "{n} faixas", "cap_tracks": "A playlist aceita até {max} faixas; {n} ficaram de fora.", "zip_read_fail": "Não consegui ler o ZIP.", "need_name": "Dê um nome para a playlist.", "empty_list": "A playlist está vazia.", "saved_ok": "“{name}” salva · {tracks}", "no_space": "Sem espaço no navegador para salvar estas músicas.", "save_fail": "Não foi possível salvar neste navegador.", "opened": "“{name}” aberta", "open_fail": "Não foi possível abrir a playlist.", "deleted": "“{name}” apagada", "delete_fail": "Não foi possível apagar.", "no_storage": "Este navegador não permite salvar aqui.", "no_saved": "Nenhuma playlist salva ainda.", "open": "ABRIR", "confirm": "CONFIRMA?", "default_list": "Playlist {d}", "exp_list_ok": "Lista exportada.", "exp_cancel": "Exportação cancelada.", "exp_unavail": "Exportação indisponível aqui.", "zip_lib_fail": "Compactador não carregou. Recarregue a página.", "zip_preparing": "Preparando ZIP… {p}%", "zip_ok": "ZIP exportado.", "zip_fail": "Erro ao gerar o ZIP.", "zip_too_big_real": "ZIP recusado: o conteúdo real é maior do que o limite permitido.", "zip_too_many": "ZIP com arquivos demais (máx. {max}).", "zip_too_big": "ZIP grande demais depois de descompactado (máx. 2 GB).", "quick_stop": "Reprodução parada: as faixas estão terminando rápido demais para repetir.", "no_audio_dir": "Nenhum arquivo de áudio encontrado nessa pasta.", "added1": "1 faixa adicionada", "addedN": "{n} faixas adicionadas", "dir_cap": " (limite de {max} por pasta; {n} ficaram de fora)", "rep_off": "Repetir: desligado", "rep_all": "Repetir: lista inteira", "rep_one": "Repetir: só esta faixa", "rep_hint": " (R alterna)", "rem": "REST", "bal_l": "E {n}", "bal_r": "D {n}", "skin_classico": "Clássico", "skin_ambar": "Âmbar", "skin_oceano": "Oceano", "skin_synth": "Synthwave", "skin_papel": "Papel", "skin_grafite": "Grafite", "preset_flat": "Flat", "preset_rock": "Rock", "preset_pop": "Pop", "preset_jazz": "Jazz", "preset_classical": "Clássica", "preset_electronic": "Eletrônica", "preset_bass": "Grave+", "preset_treble": "Agudo+", "preset_vocal": "Voz", "preset_headphones": "Fone", "warn_file": "⚠ Aberto como arquivo local: outras páginas HTML do seu disco abertas neste navegador conseguem ler as playlists salvas aqui. Para isolar, use a versão publicada.", "warn_ghio": "⚠ Em {host}, todos os sites do GitHub Pages desta conta compartilham o mesmo armazenamento (as playlists salvas). Para isolar, use um domínio próprio ou outro serviço."},
+                 en: {"bar_player": "player", "bar_eq": "equalizer", "lang_title": "Idioma / Language", "t_time": "Click: elapsed / remaining time", "t_viz": "Click: bars / oscilloscope / off", "t_prev": "Previous (Z)", "t_play": "Play / Pause (X / Space)", "t_stop": "Stop (V)", "t_next": "Next (B)", "t_open": "Open files (L)", "t_shuf": "Shuffle (S)", "t_bal": "Tap to center", "a_bal": "Balance", "t_eq": "Equalizer (E)", "t_skin": "Skins (K to cycle)", "t_add": "Add files (L)", "t_addDir": "Add a whole folder (P)", "t_remove": "Remove", "eq_reset": "RESET", "clear": "CLEAR", "save_lbl": "save current playlist", "ph_name": "Playlist name", "save": "SAVE", "saved_lbl": "saved playlists", "save_note": "Playlists (with their music) are stored in this browser. The last one you opened comes back automatically when you reopen the player.", "exp_lbl": "export playlist", "exp_zip": "ZIP · MUSIC + M3U", "exp_m3u": "LIST ONLY (M3U)", "exp_note": "<b style=\"color:var(--text);font-weight:400\">ZIP</b>: includes the music and a <i>playlist.m3u</i> in the right order — opens in Winamp, VLC, foobar, and can be imported back here with + ADD.<br><b style=\"color:var(--text);font-weight:400\">List only</b>: a text file in M3U format (saved as .txt — rename it to .m3u to use it in another player).", "add_dir": "+ FOLDER", "lists": "LISTS", "export": "EXPORT", "help": "<kbd>Z</kbd> prev · <kbd>X</kbd> play · <kbd>C</kbd> pause · <kbd>V</kbd> stop · <kbd>B</kbd> next · <kbd>←</kbd><kbd>→</kbd> 5s · <kbd>↑</kbd><kbd>↓</kbd> vol · <kbd>K</kbd> skin · <kbd>R</kbd> repeat · <kbd>P</kbd> folder<br>\n    drag audio files or folders anywhere onto the window", "no_track": "No track loaded", "untitled": "Untitled", "track_file": "track", "empty": "No tracks.<br><b>Tap + ADD</b> or <b>+ FOLDER</b> for a whole folder — or drag files and folders here.<br>MP3 · WAV · OGG · FLAC · M4A", "track1": "1 track", "tracksN": "{n} tracks", "cap_tracks": "The playlist holds up to {max} tracks; {n} were left out.", "zip_read_fail": "Could not read the ZIP.", "need_name": "Give the playlist a name.", "empty_list": "The playlist is empty.", "saved_ok": "“{name}” saved · {tracks}", "no_space": "Not enough browser storage to save these tracks.", "save_fail": "Could not save in this browser.", "opened": "“{name}” opened", "open_fail": "Could not open the playlist.", "deleted": "“{name}” deleted", "delete_fail": "Could not delete.", "no_storage": "This browser does not allow saving here.", "no_saved": "No saved playlists yet.", "open": "OPEN", "confirm": "SURE?", "default_list": "Playlist {d}", "exp_list_ok": "List exported.", "exp_cancel": "Export canceled.", "exp_unavail": "Export is not available here.", "zip_lib_fail": "The ZIP library did not load. Reload the page.", "zip_preparing": "Preparing ZIP… {p}%", "zip_ok": "ZIP exported.", "zip_fail": "Error creating the ZIP.", "zip_too_big_real": "ZIP rejected: its real content is larger than the allowed limit.", "zip_too_many": "ZIP has too many files (max. {max}).", "zip_too_big": "ZIP is too large once decompressed (max. 2 GB).", "quick_stop": "Playback stopped: tracks are ending too quickly to repeat.", "no_audio_dir": "No audio files found in that folder.", "added1": "1 track added", "addedN": "{n} tracks added", "dir_cap": " (limit of {max} per folder; {n} were left out)", "rep_off": "Repeat: off", "rep_all": "Repeat: whole playlist", "rep_one": "Repeat: this track only", "rep_hint": " (R to cycle)", "rem": "REM", "bal_l": "L {n}", "bal_r": "R {n}", "skin_classico": "Classic", "skin_ambar": "Amber", "skin_oceano": "Ocean", "skin_synth": "Synthwave", "skin_papel": "Paper", "skin_grafite": "Graphite", "preset_flat": "Flat", "preset_rock": "Rock", "preset_pop": "Pop", "preset_jazz": "Jazz", "preset_classical": "Classical", "preset_electronic": "Electronic", "preset_bass": "Bass+", "preset_treble": "Treble+", "preset_vocal": "Vocal", "preset_headphones": "Headphones", "warn_file": "⚠ Opened as a local file: other HTML pages from your disk opened in this browser can read the playlists saved here. To isolate it, use the published version.", "warn_ghio": "⚠ On {host}, every GitHub Pages site of this account shares the same storage (saved playlists). To isolate it, use your own domain or another host."} };
+  let lang = 'pt';
+  try { const sv = localStorage.getItem('tocador-lang'); lang = (sv === 'pt' || sv === 'en') ? sv : (/^pt/i.test(navigator.language || '') ? 'pt' : 'en'); } catch(e){ lang = /^pt/i.test(navigator.language || '') ? 'pt' : 'en'; }
+  const T = (k, v) => String(I18N[lang][k] != null ? I18N[lang][k] : (I18N.pt[k] != null ? I18N.pt[k] : k)).replace(/\{(\w+)\}/g, (_, x) => v && v[x] != null ? v[x] : '');
+  const nTracks = n => n === 1 ? T('track1') : T('tracksN', { n });
+  const dateLoc = () => lang === 'pt' ? 'pt-BR' : 'en-US';
   const audio = new Audio();
   audio.preload = 'metadata';
 
@@ -269,16 +282,16 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   const FREQS = [60,170,310,600,1000,3000,6000,12000,14000,16000];
   const LABELS = ['60','170','310','600','1K','3K','6K','12K','14K','16K'];
   const PRESETS = {
-    'Flat':      [0,0,0,0,0,0,0,0,0,0],
-    'Rock':      [5,3,-3,-5,-2,2,5,6,6,6],
-    'Pop':       [-1,3,5,5,3,0,-1,-1,-1,-1],
-    'Jazz':      [3,2,0,2,-2,-2,0,2,3,4],
-    'Clássica':  [0,0,0,0,0,0,-4,-4,-4,-6],
-    'Eletrônica':[6,5,1,0,-2,2,1,1,5,6],
-    'Grave+':    [8,6,4,2,0,0,0,0,0,0],
-    'Agudo+':    [0,0,0,0,0,2,4,6,8,9],
-    'Voz':       [-3,-2,0,3,5,5,3,1,0,-2],
-    'Fone':      [3,6,3,-2,-1,1,3,6,8,9],
+    flat:       [0,0,0,0,0,0,0,0,0,0],
+    rock:       [5,3,-3,-5,-2,2,5,6,6,6],
+    pop:        [-1,3,5,5,3,0,-1,-1,-1,-1],
+    jazz:       [3,2,0,2,-2,-2,0,2,3,4],
+    classical:  [0,0,0,0,0,0,-4,-4,-4,-6],
+    electronic: [6,5,1,0,-2,2,1,1,5,6],
+    bass:       [8,6,4,2,0,0,0,0,0,0],
+    treble:     [0,0,0,0,0,2,4,6,8,9],
+    vocal:      [-3,-2,0,3,5,5,3,1,0,-2],
+    headphones: [3,6,3,-2,-1,1,3,6,8,9],
   };
 
   // ---------- audio graph (criado no 1º clique) ----------
@@ -318,10 +331,10 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   // ---------- playlist ----------
   const AUDIO_RE = /\.(mp3|wav|ogg|flac|m4a|aac|opus|webm)$/i;
   function makeTrack(blob, fname, name, dur){
-    fname = oneLine(fname).slice(0,200) || 'faixa';
-    name = oneLine(name || clean(fname)).slice(0,200) || 'Sem título';
+    fname = oneLine(fname).slice(0,200) || T('track_file');
+    name = oneLine(name || clean(fname)).slice(0,200) || T('untitled');
     const t = { name, fname, blob, url: URL.createObjectURL(blob), dur: dur || null, size: blob.size };
-    if (!t.dur){ probeQ.push(t); probeNext(); }
+    if (!t.dur){ probeQ.push(t); setTimeout(probeNext, 0); }   // depois que a faixa entrar na lista
     return t;
   }
   // leitura de duração em fila: no máximo 4 ao mesmo tempo (pastas grandes não travam o navegador)
@@ -350,15 +363,15 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     let files = all.filter(f => !zipSet.has(f) && (f.type.startsWith('audio/') || AUDIO_RE.test(f.name)));
     const start = tracks.length;
     const room = Math.max(0, MAX_TRACKS - tracks.length);
-    if (files.length > room){ plMsg(`A playlist aceita até ${MAX_TRACKS} faixas; ${files.length - room} ficaram de fora.`, true); files = files.slice(0, room); }
+    if (files.length > room){ plMsg(T('cap_tracks', { max: MAX_TRACKS, n: files.length - room }), true); files = files.slice(0, room); }
     files.forEach(f => tracks.push(makeTrack(f, f.name)));
     for (const z of zips){ try {
         const got = await readZip(z); const r = Math.max(0, MAX_TRACKS - tracks.length);
         got.slice(r).forEach(t => URL.revokeObjectURL(t.url));
-        if (got.length > r) plMsg(`A playlist aceita até ${MAX_TRACKS} faixas; ${got.length - r} ficaram de fora.`, true);
+        if (got.length > r) plMsg(T('cap_tracks', { max: MAX_TRACKS, n: got.length - r }), true);
         got.slice(0, r).forEach(t => { pendingTracks.delete(t); tracks.push(t); });
         got.forEach(t => pendingTracks.delete(t));
-      } catch(e){ $('expPanel').classList.add('show'); flash('expMsg', (e && /ZIP/.test(e.message)) ? e.message : 'Não consegui ler o ZIP.', true); } }
+      } catch(e){ $('expPanel').classList.add('show'); flash('expMsg', (e && e.i18n) ? T(e.i18n, e.vars) : T('zip_read_fail'), true); } }
     if (tracks.length === start) return 0;
     render();
     if (cur < 0) { load(start); play(); }
@@ -367,13 +380,13 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   function render(){
     const pl = $('pl');
     if (!tracks.length){
-      pl.innerHTML = '<div class="empty">Sem faixas.<br><b>Toque em + ADD</b> ou <b>+ PASTA</b> para uma pasta inteira — ou arraste arquivos e pastas aqui.<br>MP3 · WAV · OGG · FLAC · M4A</div>';
+      pl.innerHTML = '<div class="empty">' + T('empty') + '</div>';   // texto fixo do dicionário
     } else {
-      pl.innerHTML = tracks.map((t,i)=>`<div class="item${i===cur?' cur':''}" data-i="${i}"><span class="n">${i+1}.</span><span class="name"></span><span class="d">${t.dur?fmt(t.dur):'--:--'}</span><button class="x" data-x="${i}" title="Remover">×</button></div>`).join('');
+      pl.innerHTML = tracks.map((t,i)=>`<div class="item${i===cur?' cur':''}" data-i="${i}"><span class="n">${i+1}.</span><span class="name"></span><span class="d">${t.dur?fmt(t.dur):'--:--'}</span><button class="x" data-x="${i}" title="${T('t_remove')}">×</button></div>`).join('');
       pl.querySelectorAll('.item .name').forEach((el,i)=> el.textContent = tracks[i].name);
     }
     const total = tracks.reduce((a,t)=>a+(t.dur||0),0);
-    $('plInfo').textContent = `${tracks.length} faixa${tracks.length===1?'':'s'} · ${fmt(total)}`;
+    $('plInfo').textContent = `${nTracks(tracks.length)} · ${fmt(total)}`;
   }
   $('pl').addEventListener('click', e => {
     const x = e.target.closest('[data-x]');
@@ -384,11 +397,11 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   function remove(i){
     URL.revokeObjectURL(tracks[i].url);
     tracks.splice(i,1);
-    if (i === cur){ stop(); cur = -1; if (tracks.length){ load(Math.min(i,tracks.length-1)); } else setTitle('Nenhuma faixa carregada'); }
+    if (i === cur){ stop(); cur = -1; if (tracks.length){ load(Math.min(i,tracks.length-1)); } else setTitle(T('no_track')); }
     else if (i < cur) cur--;
     render();
   }
-  function clearAll(){ stop(); tracks.forEach(t=>URL.revokeObjectURL(t.url)); tracks=[]; cur=-1; audio.removeAttribute('src'); setTitle('Nenhuma faixa carregada'); }
+  function clearAll(){ stop(); tracks.forEach(t=>URL.revokeObjectURL(t.url)); tracks=[]; cur=-1; audio.removeAttribute('src'); setTitle(T('no_track')); }
   $('clear').onclick = () => { clearAll(); setListName(''); render(); };
 
   // ---------- mensagens ----------
@@ -413,8 +426,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
   async function saveList(name){
     name = name.trim();
-    if (!name) { flash('saveMsg','Dê um nome para a playlist.',true); return; }
-    if (!tracks.length) { flash('saveMsg','A playlist está vazia.',true); return; }
+    if (!name) { flash('saveMsg',T('need_name'),true); return; }
+    if (!tracks.length) { flash('saveMsg',T('empty_list'),true); return; }
     try {
       const db = await DB();
       const t = db.transaction(['files','lists'],'readwrite');
@@ -426,10 +439,10 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch(e){}
       setListName(name);
       try { localStorage.setItem('tocador-last', name); } catch(e){}
-      flash('saveMsg', `“${name}” salva · ${tracks.length} faixa${tracks.length===1?'':'s'}`);
+      flash('saveMsg', T('saved_ok', { name, tracks: nTracks(tracks.length) }));
       renderSaved();
     } catch(e){
-      flash('saveMsg', /quota/i.test(e && (e.name+e.message)) ? 'Sem espaço no navegador para salvar estas músicas.' : 'Não foi possível salvar neste navegador.', true);
+      flash('saveMsg', /quota/i.test(e && (e.name+e.message)) ? T('no_space') : T('save_fail'), true);
     }
   }
   async function openList(name, autoplay){
@@ -446,8 +459,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       try { localStorage.setItem('tocador-last', name); } catch(e){}
       render(); renderSaved();
       if (tracks.length){ load(0); if (autoplay) play(); }
-      flash('saveMsg', `“${name}” aberta`);
-    } catch(e){ flash('saveMsg','Não foi possível abrir a playlist.',true); }
+      flash('saveMsg', T('opened', { name }));
+    } catch(e){ flash('saveMsg',T('open_fail'),true); }
   }
   async function deleteList(name){
     try {
@@ -461,26 +474,26 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       keys.forEach(k => { if (!used.has(k)) fs.delete(k); });
       await txDone(t);
       if (listName === name) setListName('');
-      renderSaved(); flash('saveMsg', `“${name}” apagada`);
-    } catch(e){ flash('saveMsg','Não foi possível apagar.',true); }
+      renderSaved(); flash('saveMsg', T('deleted', { name }));
+    } catch(e){ flash('saveMsg',T('delete_fail'),true); }
   }
   let confirmDel = null;
   async function renderSaved(){
     const el = $('saved');
     let lists = [];
     try { const db = await DB(); lists = await reqP(db.transaction('lists').objectStore('lists').getAll()); }
-    catch(e){ el.innerHTML = '<div class="note">Este navegador não permite salvar aqui.</div>'; return; }
+    catch(e){ el.innerHTML = '<div class="note">' + T('no_storage') + '</div>'; return; }
     lists = lists.filter(l => l && typeof l.name === 'string');
     lists.sort((a,b)=>(+b.updated||0)-(+a.updated||0));
-    if (!lists.length){ el.innerHTML = '<div class="note">Nenhuma playlist salva ainda.</div>'; return; }
+    if (!lists.length){ el.innerHTML = '<div class="note">' + T('no_saved') + '</div>'; return; }
     el.innerHTML = '';
     lists.forEach(l => {
       const row = document.createElement('div'); row.className = 'sv' + (l.name===listName?' cur':'');
       const d = new Date(l.updated);
       const cnt = Array.isArray(l.items) ? l.items.length : 0;
-      row.innerHTML = `<span class="nm"></span><span class="mt"></span><button class="btn txt" data-a="open">ABRIR</button><button class="btn txt" data-a="del">${confirmDel===l.name?'CONFIRMA?':'×'}</button>`;
+      row.innerHTML = `<span class="nm"></span><span class="mt"></span><button class="btn txt" data-a="open">${T('open')}</button><button class="btn txt" data-a="del">${confirmDel===l.name?T('confirm'):'×'}</button>`;
       row.querySelector('.nm').textContent = String(l.name);
-      row.querySelector('.mt').textContent = cnt + ' · ' + (isNaN(d) ? '--/--' : d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}));
+      row.querySelector('.mt').textContent = cnt + ' · ' + (isNaN(d) ? '--/--' : d.toLocaleDateString(dateLoc(),{day:'2-digit',month:'2-digit'}));
       row.querySelector('[data-a=open]').onclick = () => { initAudio(); openList(l.name, true); };
       row.querySelector('[data-a=del]').onclick = () => {
         if (confirmDel === l.name){ confirmDel = null; deleteList(l.name); }
@@ -496,7 +509,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     $('listsBtn').classList.toggle('on', $('savePanel').classList.contains('show'));
     $('expBtn').classList.toggle('on', $('expPanel').classList.contains('show'));
   }
-  $('listsBtn').onclick = () => { togglePanel('savePanel'); if ($('savePanel').classList.contains('show')){ renderSaved(); if(!$('plName').value) $('plName').value = 'Playlist ' + new Date().toLocaleDateString('pt-BR'); } };
+  $('listsBtn').onclick = () => { togglePanel('savePanel'); if ($('savePanel').classList.contains('show')){ renderSaved(); if(!$('plName').value) $('plName').value = T('default_list', { d: new Date().toLocaleDateString(dateLoc()) }); } };
   $('expBtn').onclick = () => togglePanel('expPanel');
 
   // ---------- exportar ----------
@@ -520,28 +533,29 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     return '#EXTM3U\n' + tracks.map((t,i) => `#EXTINF:${t.dur ? Math.round(t.dur) : -1},${oneLine(t.name)}\n${oneLine(names[i])}`).join('\n') + '\n';
   }
   $('expM3u').onclick = async () => {
-    if (!tracks.length) return flash('expMsg','A playlist está vazia.',true);
+    if (!tracks.length) return flash('expMsg',T('empty_list'),true);
     const r = await saveFile(safe(listName) + '.m3u.txt', m3u(tracks.map(t=>t.fname)));
-    flash('expMsg', r==='ok' ? 'Lista exportada.' : r==='declined' ? 'Exportação cancelada.' : 'Exportação indisponível aqui.', r!=='ok');
+    flash('expMsg', r==='ok' ? T('exp_list_ok') : r==='declined' ? T('exp_cancel') : T('exp_unavail'), r!=='ok');
   };
   $('expZip').onclick = async () => {
-    if (!tracks.length) return flash('expMsg','A playlist está vazia.',true);
-    if (!window.JSZip) return flash('expMsg','Compactador não carregou. Recarregue a página.',true);
+    if (!tracks.length) return flash('expMsg',T('empty_list'),true);
+    if (!window.JSZip) return flash('expMsg',T('zip_lib_fail'),true);
     const btn = $('expZip'); btn.disabled = true;
     try {
       const zip = new JSZip(), names = zipNames();
       tracks.forEach((t,i) => zip.file(names[i], t.blob));
       zip.file('playlist.m3u', m3u(names));
-      const blob = await zip.generateAsync({ type:'blob', compression:'STORE' }, m => { $('expMsg').textContent = 'Preparando ZIP… ' + Math.round(m.percent) + '%'; });
+      const blob = await zip.generateAsync({ type:'blob', compression:'STORE' }, m => { $('expMsg').textContent = T('zip_preparing', { p: Math.round(m.percent) }); });
       const r = await saveFile(safe(listName) + '.zip', blob);
-      flash('expMsg', r==='ok' ? 'ZIP exportado.' : r==='declined' ? 'Exportação cancelada.' : 'Exportação indisponível aqui.', r!=='ok');
-    } catch(e){ flash('expMsg','Erro ao gerar o ZIP.',true); }
+      flash('expMsg', r==='ok' ? T('zip_ok') : r==='declined' ? T('exp_cancel') : T('exp_unavail'), r!=='ok');
+    } catch(e){ flash('expMsg',T('zip_fail'),true); }
     btn.disabled = false;
   };
 
   // ---------- importar ZIP ----------
   // descompacta contando os bytes de verdade e aborta ao passar do limite
   // (o tamanho declarado no ZIP pode ser falso)
+  const zipErr = (k, vars) => { const e = new Error(I18N.en[k]); e.i18n = k; e.vars = vars; return e; };
   function inflateLimited(f, limit, budget){
     return new Promise((res, rej) => {
       const chunks = []; let n = 0, done = false;
@@ -550,7 +564,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       st.on('data', c => {
         if (done) return;
         n += c.length; budget.used += c.length;
-        if (n > limit || budget.used > budget.max) return fail(new Error('ZIP recusado: o conteúdo real é maior do que o limite permitido.'));
+        if (n > limit || budget.used > budget.max) return fail(zipErr('zip_too_big_real'));
         chunks.push(c);
       }).on('error', fail).on('end', () => { if (!done){ done = true; res(chunks); } }).resume();
     });
@@ -561,10 +575,10 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     const zip = await JSZip.loadAsync(file);
     const usize = f => (f._data && f._data.uncompressedSize) || 0;
     let entries = Object.values(zip.files).filter(f => !f.dir && !/(^|\/)(__MACOSX|\.)/.test(f.name));
-    if (entries.length > MAX_ENTRIES) throw new Error('ZIP com arquivos demais (máx. ' + MAX_ENTRIES + ').');
+    if (entries.length > MAX_ENTRIES) throw zipErr('zip_too_many', { max: MAX_ENTRIES });
     entries = entries.filter(f => /\.m3u8?$/i.test(f.name) ? usize(f) <= MAX_LIST : usize(f) <= MAX_FILE);
     const total = entries.reduce((a,f) => a + usize(f), 0);
-    if (total > MAX_TOTAL) throw new Error('ZIP grande demais depois de descompactado (máx. 2 GB).');
+    if (total > MAX_TOTAL) throw zipErr('zip_too_big');
     const audios = entries.filter(f => AUDIO_RE.test(f.name));
     const byName = new Map(audios.map(f => [f.name, f]));
     const base = n => n.split('/').pop();
@@ -628,7 +642,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   audio.addEventListener('playing', () => { playStartedAt = performance.now(); });
   audio.addEventListener('ended', () => {
     quickEnds = performance.now() - playStartedAt < 500 ? quickEnds + 1 : 0;
-    if (quickEnds >= 3){ quickEnds = 0; stop(); plMsg('Reprodução parada: as faixas estão terminando rápido demais para repetir.', true); return; }
+    if (quickEnds >= 3){ quickEnds = 0; stop(); plMsg(T('quick_stop'), true); return; }
     if (repeat === 'one'){ audio.currentTime = 0; play(); return; }
     const n = nextIdx(1); if (n<0){ stop(); return; } load(n); play(); });
   ['play','pause','emptied'].forEach(ev => audio.addEventListener(ev, updState));
@@ -657,7 +671,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   audio.addEventListener('timeupdate', updTime);
   $('seek').addEventListener('input', e => { seeking = true; setP(e.target); const d=audio.duration; if(isFinite(d)) $('time').textContent = fmt(e.target.value/1000*d); });
   $('seek').addEventListener('change', e => { const d=audio.duration; if(isFinite(d)) audio.currentTime = e.target.value/1000*d; seeking=false; });
-  $('timeBox').onclick = () => { remaining = !remaining; $('mode').textContent = remaining ? 'REST' : (repeat === 'one' ? '↻1' : repeat === 'all' ? '↻' : ''); updTime(); };
+  $('timeBox').onclick = () => { remaining = !remaining; updMode(); updTime(); };
 
   // botões
   $('play').onclick = pause;
@@ -672,12 +686,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   function plMsg(t, err){ const el=$('plMsg'); el.textContent = t || ''; el.classList.toggle('err', !!err); clearTimeout(plMsg.t); if (t) plMsg.t = setTimeout(()=>el.textContent='', 6000); }
   async function addFolderFiles(list){
     let files = [...list].filter(f => AUDIO_RE.test(f.name) && !/(^|\/)\./.test(f.webkitRelativePath || f.name)).sort(byPath);
-    if (!files.length) return plMsg('Nenhum arquivo de áudio encontrado nessa pasta.', true);
+    if (!files.length) return plMsg(T('no_audio_dir'), true);
     const extra = files.length - MAX_FOLDER;
     if (extra > 0) files = files.slice(0, MAX_FOLDER);
     const n = await addFiles(files);
     if (n !== files.length) return;   // addFiles já avisou sobre o limite da playlist
-    plMsg(`${n} faixa${n===1?'':'s'} adicionada${n===1?'':'s'}` + (extra > 0 ? ` (limite de ${MAX_FOLDER} por pasta; ${extra} ficaram de fora)` : ''), extra > 0);
+    plMsg((n === 1 ? T('added1') : T('addedN', { n })) + (extra > 0 ? T('dir_cap', { max: MAX_FOLDER, n: extra }) : ''), extra > 0);
   }
   $('addDir').onclick = () => $('folder').click();
   $('folder').onchange = e => { initAudio(); addFolderFiles(e.target.files); e.target.value=''; };
@@ -707,14 +721,14 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     return out;
   }
   $('shuf').onclick = () => { shuffle=!shuffle; $('shuf').classList.toggle('on',shuffle); };
-  const REP_INFO = { off:['REP','Repetir: desligado'], all:['REP','Repetir: lista inteira'], one:['REP','Repetir: só esta faixa'] };
+  function updMode(){ $('mode').textContent = repeat === 'one' ? '↻1' : repeat === 'all' ? '↻' : (remaining ? T('rem') : ''); }
   function setRepeat(m){
-    repeat = m; const b = $('rep');
-    b.textContent = REP_INFO[m][0]; b.title = REP_INFO[m][1] + ' (R alterna)';
+    repeat = m; const b = $('rep'); const label = T('rep_' + m);
+    b.textContent = 'REP'; b.title = label + T('rep_hint');
     b.classList.toggle('on', m !== 'off');
     if (m === 'off') b.removeAttribute('data-badge'); else b.setAttribute('data-badge', m === 'one' ? '1' : '∞');
-    b.setAttribute('aria-label', REP_INFO[m][1]);
-    $('mode').textContent = m === 'one' ? '↻1' : m === 'all' ? '↻' : (remaining ? 'REST' : '');
+    b.setAttribute('aria-label', label);
+    updMode();
   }
   $('rep').onclick = () => setRepeat(repeat === 'off' ? 'all' : repeat === 'all' ? 'one' : 'off');
 
@@ -738,7 +752,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     balCentered = c;
     $('balTrack').classList.toggle('c', c);
     $('balLbl').classList.toggle('c', c);
-    $('balLbl').textContent = c ? 'BAL ●' : (v < 0 ? 'E ' + (-v) : 'D ' + v);
+    $('balLbl').textContent = c ? 'BAL ●' : (v < 0 ? T('bal_l', { n: -v }) : T('bal_r', { n: v }));
   }
   bal.oninput = () => setBal(bal.value);
   bal.ondblclick = () => setBal(0);
@@ -761,7 +775,10 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     inp.addEventListener('dblclick', () => { inp.value = 0; applyEq(); });
   });
   const sel = $('preset');
-  sel.innerHTML = '<option value="">Presets…</option>' + Object.keys(PRESETS).map(k=>`<option>${k}</option>`).join('');
+  function renderPresets(){ const v = sel.value;
+    sel.innerHTML = '<option value="">Presets…</option>' + Object.keys(PRESETS).map(k=>`<option value="${k}">${T('preset_' + k)}</option>`).join('');
+    sel.value = v; }
+  renderPresets();
   sel.onchange = () => { const p = PRESETS[sel.value]; if(!p) return; p.forEach((g,i)=>bandInputs[i].value=g); applyEq(); };
   $('eqReset').onclick = () => { [preInput,...bandInputs].forEach(i=>i.value=0); sel.value=''; applyEq(); };
   $('eqOn').onclick = e => { eqEnabled = !eqEnabled; e.target.classList.toggle('on',eqEnabled); e.target.textContent = eqEnabled?'ON':'OFF'; if (ctx) connectGraph(); };
@@ -785,23 +802,27 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
   // ---------- skins ----------
   const SKINS = [
-    {id:'classico', nome:'Clássico', c:['#0e0f11','#16181b','#9be36b','#5fb83a']},
-    {id:'ambar',    nome:'Âmbar',    c:['#110d08','#1a140d','#ffb547','#d9822b']},
-    {id:'oceano',   nome:'Oceano',   c:['#081018','#0e1824','#5ad1ff','#2b8fd6']},
-    {id:'synth',    nome:'Synthwave',c:['#0f0818','#170d24','#ff6ad5','#a855f7']},
-    {id:'papel',    nome:'Papel',    c:['#e9e6df','#f6f4ef','#d14b2b','#2b2a27']},
-    {id:'grafite',  nome:'Grafite',  c:['#0b0b0b','#141414','#f4f4f4','#8f8f8f']},
+    {id:'classico', c:['#0e0f11','#16181b','#9be36b','#5fb83a']},
+    {id:'ambar',    c:['#110d08','#1a140d','#ffb547','#d9822b']},
+    {id:'oceano',   c:['#081018','#0e1824','#5ad1ff','#2b8fd6']},
+    {id:'synth',    c:['#0f0818','#170d24','#ff6ad5','#a855f7']},
+    {id:'papel',    c:['#e9e6df','#f6f4ef','#d14b2b','#2b2a27']},
+    {id:'grafite',  c:['#0b0b0b','#141414','#f4f4f4','#8f8f8f']},
   ];
   let skinIdx = 0;
   const skinsEl = $('skins');
-  skinsEl.innerHTML = SKINS.map((s,i)=>`<button class="sk" data-s="${i}"><div class="sw">${s.c.map(c=>`<i style="background:${c}"></i>`).join('')}</div><span>${s.nome}</span></button>`).join('');
+  function renderSkins(){
+    skinsEl.innerHTML = SKINS.map((s,i)=>`<button class="sk${i===skinIdx?' on':''}" data-s="${i}"><div class="sw">${s.c.map(c=>`<i style="background:${c}"></i>`).join('')}</div><span>${T('skin_' + s.id)}</span></button>`).join('');
+    $('skName').textContent = T('skin_' + SKINS[skinIdx].id);
+  }
+  renderSkins();
   function setSkin(i){
     skinIdx = (i + SKINS.length) % SKINS.length;
     const s = SKINS[skinIdx];
     if (s.id === 'classico') document.documentElement.removeAttribute('data-skin');
     else document.documentElement.setAttribute('data-skin', s.id);
     skinsEl.querySelectorAll('.sk').forEach((b,j)=>b.classList.toggle('on', j===skinIdx));
-    $('skName').textContent = s.nome;
+    $('skName').textContent = T('skin_' + s.id);
     readColors();
     try { localStorage.setItem('tocador-skin', s.id); } catch(e){}
   }
@@ -876,11 +897,31 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     if (map[k]){ e.preventDefault(); map[k](); }
   });
 
-  render(); updState(); setTitle('Nenhuma faixa carregada');
-  { const w = $('fileWarn');
-    if (location.protocol === 'file:') w.textContent = '⚠ Aberto como arquivo local: outras páginas HTML do seu disco abertas neste navegador conseguem ler as playlists salvas aqui. Para isolar, use a versão publicada.';
-    else if (/\.github\.io$/i.test(location.hostname)) w.textContent = '⚠ Em ' + location.hostname + ', todos os sites do GitHub Pages desta conta compartilham o mesmo armazenamento (as playlists salvas). Para isolar, use um domínio próprio ou outro serviço.';
-    if (w.textContent) w.style.display = 'block'; }
+  // ---------- aplicar idioma ----------
+  function renderWarn(){
+    const w = $('fileWarn');
+    w.textContent = location.protocol === 'file:' ? T('warn_file')
+      : /\.github\.io$/i.test(location.hostname) ? T('warn_ghio', { host: location.hostname }) : '';
+    w.style.display = w.textContent ? 'block' : 'none';
+  }
+  function applyLang(l){
+    lang = l === 'en' ? 'en' : 'pt';
+    try { localStorage.setItem('tocador-lang', lang); } catch(e){}
+    document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+    document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = T(el.dataset.i18n));
+    document.querySelectorAll('[data-i18n-html]').forEach(el => el.innerHTML = T(el.dataset.i18nHtml));   // só textos fixos do dicionário
+    document.querySelectorAll('[data-i18n-title]').forEach(el => el.title = T(el.dataset.i18nTitle));
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => el.placeholder = T(el.dataset.i18nPh));
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', T(el.dataset.i18nAria)));
+    document.querySelectorAll('.lang [data-lang]').forEach(b => { const on = b.dataset.lang === lang; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+    ['plMsg','saveMsg','expMsg'].forEach(id => $(id).textContent = '');   // mensagens antigas ficariam no outro idioma
+    setRepeat(repeat); setBal(bal.value); renderPresets(); renderSkins(); renderWarn(); render();
+    if ($('savePanel').classList.contains('show')) renderSaved();
+    if (cur < 0) setTitle(T('no_track'));
+  }
+  document.querySelectorAll('.lang [data-lang]').forEach(b => b.onclick = () => applyLang(b.dataset.lang));
+
+  updState(); applyLang(lang);
   let lastList = null; try { lastList = localStorage.getItem('tocador-last'); } catch(e){}
   if (lastList) openList(lastList, false);
 })();
