@@ -27,7 +27,7 @@ A minimalist, Winamp-inspired audio player that runs entirely in your browser. I
 
 ## Quick start
 
-**Use it online** — open the GitHub Pages site of this repository (see [Publishing](#publishing-with-github-pages)).
+**Use it online** — **[https://pedrohborgens.github.io/Audio-player-lite/](https://pedrohborgens.github.io/Audio-player-lite/)**
 
 **Use it offline** — download [`index.html`](index.html) and open it in Chrome, Edge, Firefox or Safari.
 

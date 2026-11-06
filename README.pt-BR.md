@@ -25,7 +25,7 @@ Um tocador de áudio minimalista, inspirado no Winamp, que roda inteiramente no 
 
 ## Começando
 
-**Online** — abra o site do GitHub Pages deste repositório (veja [Publicação](#publicação-com-github-pages)).
+**Online** — **[https://pedrohborgens.github.io/Audio-player-lite/](https://pedrohborgens.github.io/Audio-player-lite/)**
 
 **Offline** — baixe o [`index.html`](index.html) e abra no Chrome, Edge, Firefox ou Safari.
 
