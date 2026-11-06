@@ -21,6 +21,7 @@ A minimalist, Winamp-inspired audio player that runs entirely in your browser. I
 | **Saved playlists** | Named playlists stored in the browser together with the audio; the last one reopens automatically |
 | **Export / import** | ZIP with the audio files plus `playlist.m3u` (opens in Winamp, VLC, foobar2000…), or the M3U list alone; ZIPs can be imported back |
 | **Formats** | MP3, WAV, OGG, FLAC, M4A, AAC, OPUS, WEBM (whatever your browser can decode) |
+| **Help and version** | The **?** button (top-right) shows the player version, the project link, the user guide in the current language and where to report a problem |
 | **Two languages** | English and Brazilian Portuguese interface, switchable at any time (**PT / EN** button); follows the browser's language on the first visit |
 | **Privacy** | Zero third-party requests: no CDN, no web fonts, no analytics; external connections are blocked by a strict Content Security Policy |
 
@@ -43,6 +44,7 @@ Then tap **+ ADD** for files or **+ FOLDER** for a whole folder (or drag files o
 | `S` | Shuffle | `R` | Repeat: off → playlist → track |
 | `E` | Equalizer | `K` | Next skin |
 | `L` | Open files | `P` | Add a folder |
+| `?` | Help / about | `Esc` | Close help |
 
 ## Documentation
 

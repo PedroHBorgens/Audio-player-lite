@@ -47,6 +47,7 @@ Thanks for your interest! Bug reports, ideas and pull requests are welcome.
 - Pass every file name or title through `oneLine()`.
 - Wrap storage calls (`localStorage`, `IndexedDB`) in `try/catch`.
 - Do not add dependencies loaded from a CDN. If a library is essential, embed it, record its source and SHA-256 in `THIRD-PARTY-NOTICES.md`, and check its license is compatible.
+- When releasing, bump `VERSION` in `index.html` and add the entry to `CHANGELOG.md`.
 - New UI text goes into **both** `I18N.pt` and `I18N.en` with the same key. Never put `{placeholders}` in a string that is inserted as HTML.
 - Do not add features that request device permissions (microphone, camera, location). The recorder was removed on purpose to keep the attack surface minimal.
 
@@ -108,6 +109,7 @@ Obrigado pelo interesse! Relatos de bugs, ideias e pull requests são bem-vindos
 - Passe todo nome de arquivo ou título por `oneLine()`.
 - Proteja acessos a armazenamento (`localStorage`, `IndexedDB`) com `try/catch`.
 - Não adicione dependências carregadas de CDN. Se uma biblioteca for essencial, embuta-a, registre origem e SHA-256 em `THIRD-PARTY-NOTICES.md` e confira se a licença é compatível.
+- Ao lançar uma versão, atualize `VERSION` no `index.html` e adicione a entrada no `CHANGELOG.md`.
 - Todo texto novo da interface vai para `I18N.pt` **e** `I18N.en`, com a mesma chave. Nunca use `{marcadores}` em um texto inserido como HTML.
 - Não adicione recursos que peçam permissões do aparelho (microfone, câmera, localização). O gravador foi removido de propósito para manter a superfície de ataque mínima.
 

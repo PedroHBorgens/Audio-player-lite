@@ -62,6 +62,10 @@ Nomes de arquivos e títulos passam por `oneLine()`: remove caracteres de contro
 - O idioma fica no `localStorage` (`tocador-lang`) e só é aceito se for exatamente `pt` ou `en`; caso contrário, decide o idioma do navegador. O `<html lang>` acompanha a escolha.
 - A versão hospedada no Claude é gerada a partir do `index.html`, removendo a meta tag de CSP (a plataforma aplica a própria política), então as duas versões têm o mesmo código.
 
+## Versão e cartão de ajuda
+
+`VERSION` e `REPO_URL` são constantes no começo do script do tocador; o cartão **?** lê esses valores, e o link do guia muda com o idioma. Atualize `VERSION` junto com o `CHANGELOG.md` a cada versão.
+
 ## Armazenamento
 
 ### IndexedDB — banco `tocador`, versão 1

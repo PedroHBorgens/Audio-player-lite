@@ -21,6 +21,7 @@ Um tocador de áudio minimalista, inspirado no Winamp, que roda inteiramente no 
 | **Playlists salvas** | Playlists com nome guardadas no navegador junto com o áudio; a última reabre sozinha |
 | **Exportar / importar** | ZIP com as músicas e um `playlist.m3u` (abre no Winamp, VLC, foobar2000…), ou só a lista M3U; o ZIP pode ser importado de volta |
 | **Formatos** | MP3, WAV, OGG, FLAC, M4A, AAC, OPUS, WEBM (o que o seu navegador souber decodificar) |
+| **Ajuda e versão** | O botão **?** (canto superior direito) mostra a versão do tocador, o link do projeto, o guia de uso no idioma atual e onde relatar um problema |
 | **Dois idiomas** | Interface em português do Brasil e em inglês, trocável a qualquer momento (botão **PT / EN**); na primeira visita segue o idioma do navegador |
 | **Privacidade** | Zero requisições a terceiros: sem CDN, sem fontes da web, sem estatísticas; conexões externas bloqueadas por uma política de segurança (CSP) rígida |
 
@@ -43,6 +44,7 @@ Depois toque em **+ ADD** para arquivos ou **+ PASTA** para uma pasta inteira (o
 | `S` | Aleatório | `R` | Repetir: desligado → lista → faixa |
 | `E` | Equalizador | `K` | Próxima skin |
 | `L` | Abrir arquivos | `P` | Adicionar pasta |
+| `?` | Ajuda / sobre | `Esc` | Fechar a ajuda |
 
 ## Documentação
 

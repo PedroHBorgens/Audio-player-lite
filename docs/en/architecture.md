@@ -64,6 +64,10 @@ File names and titles go through `oneLine()`, which strips control characters, l
 - The language is stored in `localStorage` (`tocador-lang`) and accepted only if it is exactly `pt` or `en`; otherwise the browser language decides. `<html lang>` follows the choice.
 - The Claude-hosted version is generated from `index.html` by removing the CSP meta tag (the host applies its own policy), so both versions share the same code.
 
+## Version and help card
+
+`VERSION` and `REPO_URL` are constants at the top of the player script; the **?** card reads them, and the user-guide link switches with the language. Bump `VERSION` together with `CHANGELOG.md` on every release.
+
 ## Storage
 
 ### IndexedDB — database `tocador`, version 1

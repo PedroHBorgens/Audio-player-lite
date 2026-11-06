@@ -5,6 +5,7 @@
 ## Sumário
 
 - [Idioma](#idioma)
+- [Ajuda e versão](#ajuda-e-versão)
 1. [Abrindo o tocador](#1-abrindo-o-tocador)
 2. [Adicionando músicas](#2-adicionando-músicas)
 3. [Controles de reprodução](#3-controles-de-reprodução)
@@ -21,6 +22,10 @@
 ## Idioma
 
 Toque em **PT** ou **EN** no canto superior direito da janela principal para trocar toda a interface entre português do Brasil e inglês — botões, dicas, mensagens, nomes de skins e de presets. A escolha fica salva no navegador; na primeira visita, o tocador segue o idioma do navegador (português se ele estiver em português, inglês nos demais casos).
+
+## Ajuda e versão
+
+Toque no botão redondo **?** no canto superior direito (ou aperte `?`) para abrir o cartão **Sobre**. Ele mostra a **versão** que você está usando e traz links para o **projeto no GitHub**, o **guia de uso** no idioma atual e a página para **relatar um problema**. Feche com **×**, `Esc` ou tocando em qualquer outro lugar. Os links abrem em uma nova aba.
 
 ## 1. Abrindo o tocador
 
@@ -122,6 +127,7 @@ Dentro do Claude, o navegador pede confirmação antes de salvar o arquivo expor
 | `S` | Aleatório | `R` | Repetir: desligado → lista → faixa |
 | `E` | Equalizador | `K` | Próxima skin |
 | `L` | Abrir arquivos | `P` | Adicionar pasta |
+| `?` | Ajuda / sobre | `Esc` | Fechar a ajuda |
 
 Os atalhos não funcionam enquanto você digita no campo de nome da playlist.
 

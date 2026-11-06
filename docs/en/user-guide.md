@@ -7,6 +7,7 @@ The interface is available in **English and Brazilian Portuguese** (see [Languag
 ## Contents
 
 - [Language](#language)
+- [Help and version](#help-and-version)
 1. [Opening the player](#1-opening-the-player)
 2. [Adding music](#2-adding-music)
 3. [Playback controls](#3-playback-controls)
@@ -23,6 +24,10 @@ The interface is available in **English and Brazilian Portuguese** (see [Languag
 ## Language
 
 Tap **PT** or **EN** in the top-right corner of the main window to switch the whole interface between Brazilian Portuguese and English — buttons, tips, messages, skin and preset names. The choice is remembered by the browser; on the first visit the player follows your browser's language (Portuguese if it is set to Portuguese, English otherwise).
+
+## Help and version
+
+Tap the round **?** button in the top-right corner (or press `?`) to open the **About** card. It shows the **version** you are using and links to the **project on GitHub**, the **user guide** in the current language and the page to **report a problem**. Close it with **×**, `Esc` or by tapping anywhere else. Links open in a new tab.
 
 ## 1. Opening the player
 
@@ -124,6 +129,7 @@ Inside Claude, the browser asks for confirmation before saving an exported file.
 | `S` | Shuffle | `R` | Repeat: off → playlist → track |
 | `E` | Equalizer | `K` | Next skin |
 | `L` | Open files | `P` | Add a folder |
+| `?` | Help / about | `Esc` | Close help |
 
 Shortcuts are ignored while typing in the playlist name field.
 

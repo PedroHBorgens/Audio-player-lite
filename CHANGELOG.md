@@ -2,6 +2,16 @@
 
 Format based on [Keep a Changelog](https://keepachangelog.com/). / Formato baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/).
 
+## [1.4.0] — 2026-11-06
+
+### Added / Adicionado
+
+- **?** help button (top-right, `?` key) with the player version, project link, user guide in the current language and issue reporting / Botão de ajuda **?** (canto superior direito, tecla `?`) com a versão do tocador, link do projeto, guia de uso no idioma atual e relato de problemas
+
+### Changed / Alterado
+
+- Site published as plain static files (`.nojekyll`) / Site publicado como arquivos estáticos (`.nojekyll`)
+
 ## [1.3.0] — 2026-11-06
 
 ### Added / Adicionado
