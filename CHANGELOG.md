@@ -2,6 +2,12 @@
 
 Format based on [Keep a Changelog](https://keepachangelog.com/). / Formato baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/).
 
+## [1.4.1] — 2026-11-06
+
+### Changed / Alterado
+
+- Shuffle button reads **ALEAT** (aleatório) in the Portuguese interface; **SHUF** in English / O botão de ordem aleatória mostra **ALEAT** na interface em português; **SHUF** em inglês
+
 ## [1.4.0] — 2026-11-06
 
 ### Added / Adicionado

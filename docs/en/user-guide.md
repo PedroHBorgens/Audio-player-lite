@@ -59,7 +59,7 @@ Accepted formats: MP3, WAV, OGG, FLAC, M4A, AAC, OPUS and WEBM. If the browser c
 | ▶ / ❚❚ | Play / pause |
 | ■ | Stop and rewind |
 | ⏭ | Next track |
-| **SHUF** | Shuffle (lit = on) |
+| **SHUF** (*ALEAT*) | Shuffle (lit = on) |
 | **REP** | Each tap changes the mode: **off** → **whole playlist** (lit with an **∞** in the corner, `↻` on the display) → **current track only** (lit with a **1** in the corner, `↻1` on the display). In track mode the song restarts when it ends; ⏮ ⏭ still change tracks |
 | Seek bar | Drag to jump anywhere in the track |
 | **VOL** | Volume |
