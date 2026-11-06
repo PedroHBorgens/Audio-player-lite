@@ -8,3 +8,12 @@ Thumbs.db
 *.ogg
 *.webm
 node_modules/
+
+# Nunca versionar segredos, chaves ou certificados
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
