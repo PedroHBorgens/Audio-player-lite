@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; media-src blob:; img-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-UyJpdxXCJTDaeaknKqEkzDeKp2XGn4OrcySY11Gkyw4=' 'sha256-E3STdmBoVzUGaJgmDXi0yIeE0VyjF5TXqX3mJ1YkR04='; style-src 'unsafe-inline'; media-src blob:; img-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Tocador Minimalista · com gravação</title>
 <style>
@@ -194,7 +194,7 @@
       <div class="lbl" style="margin-top:4px">playlists salvas</div>
       <div class="saved" id="saved"></div>
       <div class="note">As playlists (com as músicas) ficam guardadas neste navegador. A última aberta volta sozinha quando você reabrir o tocador.</div>
-      <div class="note" id="fileWarn" style="display:none;color:#e0a34a">⚠ Aberto como arquivo local: outras páginas HTML abertas do seu disco neste navegador conseguem ler o que for salvo aqui (incluindo gravações). Para isolar, publique em um endereço https.</div>
+      <div class="note" id="fileWarn" style="display:none;color:#e0a34a"></div>
       <div class="msg" id="saveMsg"></div>
     </div>
     <div class="panel" id="expPanel">
@@ -302,7 +302,9 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   // ---------- playlist ----------
   const AUDIO_RE = /\.(mp3|wav|ogg|flac|m4a|aac|opus|webm)$/i;
   function makeTrack(blob, fname, name, dur){
-    const t = { name: name || clean(fname), fname, blob, url: URL.createObjectURL(blob), dur: dur || null, size: blob.size };
+    fname = oneLine(fname).slice(0,200) || 'faixa';
+    name = oneLine(name || clean(fname)).slice(0,200) || 'Sem título';
+    const t = { name, fname, blob, url: URL.createObjectURL(blob), dur: dur || null, size: blob.size };
     if (!t.dur){ const probe = new Audio(); probe.preload='metadata'; probe.src = t.url;
       probe.onloadedmetadata = () => { if (isFinite(probe.duration)) { t.dur = probe.duration; render(); } }; }
     return t;
@@ -462,7 +464,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       document.body.appendChild(a); a.click(); a.remove(); return 'ok';
     } catch(e){ return 'fail'; }
   }
-  const oneLine = s => String(s == null ? '' : s).replace(/[\x00-\x1f\x7f\u2028\u2029]+/g,' ').trim();
+  const oneLine = s => String(s == null ? '' : s).replace(/[\x00-\x1f\x7f\u2028\u2029]+/g,' ').replace(/[\u200e\u200f\u202a-\u202e\u2066-\u2069]/g,'').trim();
   const safe = s => oneLine(s || 'playlist').replace(/[\\/:*?"<>|]+/g,'-').replace(/^\.+/,'').slice(0,120).trim() || 'playlist';
   function zipNames(){ const pad = String(tracks.length).length < 2 ? 2 : String(tracks.length).length;
     return tracks.map((t,i) => String(i+1).padStart(pad,'0') + ' - ' + safe(t.fname)); }
@@ -642,7 +644,9 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     try { await startRec(); } finally { recStarting = false; $('rec').disabled = false; }
   }
   addEventListener('pagehide', () => { if (recState) recState.mr.stop(); });
+  const framed = (() => { try { return window.top !== window.self; } catch(e){ return true; } })();
   async function startRec(){
+    if (framed) return recMsg('Por segurança, a gravação fica desativada quando o tocador está dentro de outra página.');
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder)
       return recMsg(location.protocol === 'http:' ? 'O microfone só funciona em https:// ou abrindo o arquivo direto no navegador.' : 'Este navegador não permite gravar áudio.');
     let stream;
@@ -783,7 +787,10 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   });
 
   render(); updState(); setTitle('Nenhuma faixa carregada');
-  if (location.protocol === 'file:') $('fileWarn').style.display = 'block';
+  { const w = $('fileWarn');
+    if (location.protocol === 'file:') w.textContent = '⚠ Aberto como arquivo local: outras páginas HTML do seu disco abertas neste navegador conseguem ler o que for salvo aqui (incluindo gravações). Para isolar, use a versão publicada.';
+    else if (/\.github\.io$/i.test(location.hostname)) w.textContent = '⚠ Em ' + location.hostname + ', todos os sites do GitHub Pages desta conta compartilham o mesmo armazenamento e a permissão do microfone. Para isolar, use um domínio próprio ou outro serviço.';
+    if (w.textContent) w.style.display = 'block'; }
   let lastList = null; try { lastList = localStorage.getItem('tocador-last'); } catch(e){}
   if (lastList) openList(lastList, false);
 })();
