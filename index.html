@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-UyJpdxXCJTDaeaknKqEkzDeKp2XGn4OrcySY11Gkyw4=' 'sha256-E3STdmBoVzUGaJgmDXi0yIeE0VyjF5TXqX3mJ1YkR04='; style-src 'unsafe-inline'; media-src blob:; img-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-UyJpdxXCJTDaeaknKqEkzDeKp2XGn4OrcySY11Gkyw4=' 'sha256-qpSe5B6YyaU5dInT2YsGtcybqrlwzNuBfKHSnt+uGqg='; style-src 'unsafe-inline'; media-src blob:; img-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
-<title>Tocador Minimalista · com gravação</title>
+<title>Tocador Minimalista</title>
 <style>
   :root{
     --bg:#0e0f11; --panel:#16181b; --panel2:#1c1f23; --line:#26292e;
@@ -72,7 +72,20 @@
   .grow{flex:1}
   .vol{display:flex;align-items:center;gap:6px;width:110px}
   .vol label{font-size:9px;color:var(--dim);letter-spacing:.1em}
-  .bal{width:60px}
+  /* balanço com centro marcado e trava magnética */
+  .balbox{display:flex;align-items:center;gap:6px;width:118px}
+  .ballbl{all:unset;cursor:pointer;font-size:9px;color:var(--dim);letter-spacing:.1em;width:34px;white-space:nowrap}
+  .ballbl:hover{color:var(--accent)}
+  .ballbl.c{color:var(--accent)}
+  .baltrack{position:relative;flex:1;display:flex;align-items:center}
+  .baltrack::before,.baltrack::after{content:'';position:absolute;left:50%;width:1px;height:4px;background:var(--dim);transform:translateX(-.5px);pointer-events:none}
+  .baltrack::before{top:-2px}.baltrack::after{bottom:-2px}
+  .baltrack.c::before,.baltrack.c::after{background:var(--accent)}
+  #bal::-webkit-slider-runnable-track{background:linear-gradient(to right,var(--line) var(--a,50%),var(--accent2) var(--a,50%),var(--accent2) var(--b,50%),var(--line) var(--b,50%))}
+  #bal::-moz-range-track{background:linear-gradient(to right,var(--line) var(--a,50%),var(--accent2) var(--a,50%),var(--accent2) var(--b,50%),var(--line) var(--b,50%))}
+  #bal::-moz-range-progress{background:transparent}
+  .baltrack.c #bal::-webkit-slider-thumb{background:var(--accent)}
+  .baltrack.c #bal::-moz-range-thumb{background:var(--accent)}
 
   /* eq */
   .eq{padding:10px;display:none}
@@ -123,11 +136,6 @@
   .sv .btn{height:22px}
   .msg{font-size:9px;color:var(--accent);letter-spacing:.06em;min-height:11px}
   .msg.err{color:#e06c6c}
-  .btn.rec{color:#e05252}
-  .btn.rec.live{background:#e05252;color:#fff;border-color:#e05252;animation:blink 1.2s infinite}
-  @keyframes blink{50%{opacity:.55}}
-  .recmsg{padding:0 10px 8px;font-size:9px;color:#e06c6c;letter-spacing:.06em;min-height:0}
-  .recmsg:empty{display:none}
 </style>
 </head>
 <body>
@@ -153,15 +161,13 @@
       <button class="btn" id="stop" title="Parar (V)"><svg viewBox="0 0 12 12"><path d="M2 2h8v8H2z"/></svg></button>
       <button class="btn" id="next" title="Próxima (B)"><svg viewBox="0 0 12 12"><path d="M8.4 1H10v10H8.4zM1 1v10l7-5z"/></svg></button>
       <button class="btn" id="open" title="Abrir arquivos (L)"><svg viewBox="0 0 12 12"><path d="M6 1l5 5H8v3H4V6H1zM1 10h10v1.5H1z"/></svg></button>
-      <button class="btn txt rec" id="rec" title="Gravar do microfone">● REC</button>
       <div class="grow"></div>
       <button class="btn txt" id="shuf" title="Aleatório (S)">SHUF</button>
       <button class="btn txt" id="rep" title="Repetir (R)">REP</button>
     </div>
-    <div class="recmsg" id="recMsg"></div>
     <div class="controls" style="padding-top:0">
       <div class="vol" style="flex:1;width:auto"><label>VOL</label><input type="range" id="vol" min="0" max="100" value="80"></div>
-      <div class="vol" style="width:110px"><label>BAL</label><input class="bal" type="range" id="bal" min="-100" max="100" value="0"></div>
+      <div class="balbox"><button class="ballbl c" id="balLbl" title="Toque para centralizar">BAL ●</button><div class="baltrack c" id="balTrack"><input type="range" id="bal" min="-100" max="100" value="0" step="1" aria-label="Balanço"></div></div>
       <button class="btn txt" id="eqBtn" title="Equalizador (E)">EQ</button>
       <button class="btn txt" id="skBtn" title="Skins (K troca)">SKIN</button>
     </div>
@@ -578,7 +584,6 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   // tempo / seek
   let seeking = false;
   function updTime(){
-    if (recState) return;
     const d = isFinite(audio.duration) ? audio.duration : (tracks[cur] && tracks[cur].dur), c = audio.currentTime;
     $('time').textContent = remaining && isFinite(d) ? '-'+fmt(d-c) : fmt(c);
     if (!seeking){ $('seek').value = isFinite(d)&&d ? c/d*1000 : 0; setP($('seek')); }
@@ -602,9 +607,28 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   const vol = $('vol'), bal = $('bal');
   const setVol = v => { vol.value = Math.max(0,Math.min(100,v)); audio.volume = vol.value/100; setP(vol); };
   vol.oninput = () => setVol(+vol.value);
-  bal.oninput = () => { setP(bal); if (panner) panner.pan.value = bal.value/100; };
-  bal.ondblclick = () => { bal.value = 0; bal.oninput(); };
-  setVol(80); setP(bal);
+  // balanço: trava magnética no centro (±10), marca central, toque no rótulo recentraliza
+  const BAL_SNAP = 10;
+  let balCentered = true;
+  function setBal(v){
+    v = Math.max(-100, Math.min(100, Math.round(+v || 0)));
+    if (Math.abs(v) <= BAL_SNAP) v = 0;
+    bal.value = v;
+    if (panner) panner.pan.value = v/100;
+    const p = (v + 100) / 2;                       // posição em %
+    bal.style.setProperty('--a', Math.min(50, p) + '%');
+    bal.style.setProperty('--b', Math.max(50, p) + '%');
+    const c = v === 0;
+    if (c && !balCentered){ try { navigator.vibrate && navigator.vibrate(8); } catch(e){} }
+    balCentered = c;
+    $('balTrack').classList.toggle('c', c);
+    $('balLbl').classList.toggle('c', c);
+    $('balLbl').textContent = c ? 'BAL ●' : (v < 0 ? 'E ' + (-v) : 'D ' + v);
+  }
+  bal.oninput = () => setBal(bal.value);
+  bal.ondblclick = () => setBal(0);
+  $('balLbl').onclick = () => setBal(0);
+  setVol(80); setBal(0);
 
   // ---------- equalizador ----------
   const bandsEl = $('bands');
@@ -632,59 +656,6 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   // ---------- letreiro ----------
   const titleEl = $('title'); let mx = 0, mw = 0, boxW = 0;
   function setTitle(t){ titleEl.textContent = t; mx = 0; requestAnimationFrame(()=>{ mw = titleEl.scrollWidth; boxW = titleEl.parentElement.clientWidth - 16; }); }
-
-  // ---------- gravação (microfone) ----------
-  let recState = null, recAnalyser = null;
-  function recMsg(t){ $('recMsg').textContent = t || ''; if (t) setTimeout(()=>{ if ($('recMsg').textContent === t) $('recMsg').textContent=''; }, 6000); }
-  let recStarting = false;
-  async function toggleRec(){
-    if (recState){ recState.mr.stop(); return; }
-    if (recStarting) return;
-    recStarting = true; $('rec').disabled = true;
-    try { await startRec(); } finally { recStarting = false; $('rec').disabled = false; }
-  }
-  addEventListener('pagehide', () => { if (recState) recState.mr.stop(); });
-  const framed = (() => { try { return window.top !== window.self; } catch(e){ return true; } })();
-  async function startRec(){
-    if (framed) return recMsg('Por segurança, a gravação fica desativada quando o tocador está dentro de outra página.');
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder)
-      return recMsg(location.protocol === 'http:' ? 'O microfone só funciona em https:// ou abrindo o arquivo direto no navegador.' : 'Este navegador não permite gravar áudio.');
-    let stream;
-    try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation:false, noiseSuppression:false, autoGainControl:false } }); }
-    catch(e){ return recMsg(e.name === 'NotAllowedError' ? 'Permissão do microfone negada. Libere nas configurações do navegador.' : 'Nenhum microfone encontrado.'); }
-    initAudio(); audio.pause();
-    const types = ['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg;codecs=opus'];
-    const type = types.find(t => MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t)) || '';
-    let mr;
-    try { mr = new MediaRecorder(stream, type ? { mimeType: type, audioBitsPerSecond: 128000 } : undefined); }
-    catch(e){ stream.getTracks().forEach(t=>t.stop()); return recMsg('Não foi possível iniciar a gravação.'); }
-    const chunks = [];
-    let micSrc = null;
-    if (ctx){ micSrc = ctx.createMediaStreamSource(stream); recAnalyser = ctx.createAnalyser(); recAnalyser.fftSize = 1024; recAnalyser.smoothingTimeConstant = .75; micSrc.connect(recAnalyser); } // não vai para os alto-falantes
-    mr.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
-    mr.onstop = () => {
-      const secs = (performance.now() - recState.start) / 1000;
-      stream.getTracks().forEach(t => t.stop());
-      if (micSrc) micSrc.disconnect(); recAnalyser = null; recState = null;
-      $('rec').classList.remove('live'); $('rec').textContent = '● REC'; updState();
-      if (!chunks.length || secs < 0.5){ recMsg('Gravação muito curta, descartada.'); if (cur >= 0) setTitle(`${cur+1}. ${tracks[cur].name}`); else setTitle('Nenhuma faixa carregada'); return; }
-      const mt = mr.mimeType || type || 'audio/webm';
-      const ext = mt.includes('mp4') ? 'm4a' : mt.includes('ogg') ? 'ogg' : 'webm';
-      const d = new Date();
-      const name = 'Gravação ' + d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}) + ' ' + d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-      const fname = name.replace(/[\/:]/g,'-') + '.' + ext;
-      tracks.push(makeTrack(new Blob(chunks, { type: mt }), fname, name, secs));
-      load(tracks.length - 1);
-      recMsg('');
-      $('recMsg').style.color = 'var(--accent)'; recMsg('Gravação adicionada à playlist. Use LISTAS para salvar.');
-      setTimeout(()=>{ $('recMsg').style.color=''; }, 6000);
-    };
-    mr.start(250);
-    recState = { mr, start: performance.now(), shown: '' };
-    $('rec').classList.add('live'); $('rec').textContent = '■ PARAR';
-    $('state').textContent = '● REC';
-  }
-  $('rec').onclick = toggleRec;
 
   // ---------- visualizador ----------
   const cv = $('viz'), g = cv.getContext('2d');
@@ -733,8 +704,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     // viz
     const W = cv.clientWidth, H = cv.clientHeight;
     g.clearRect(0,0,W,H);
-    const an = recAnalyser || analyser;
-    if (recState){ const s = fmt((now-recState.start)/1000); if (s !== recState.shown){ recState.shown = s; titleEl.textContent = '● GRAVANDO  ' + s; $('time').textContent = s; } }
+    const an = analyser;
     if (an && vizMode !== 2){
       if (vizMode === 0){
         if (!freq) freq = new Uint8Array(an.frequencyBinCount);
@@ -788,8 +758,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
   render(); updState(); setTitle('Nenhuma faixa carregada');
   { const w = $('fileWarn');
-    if (location.protocol === 'file:') w.textContent = '⚠ Aberto como arquivo local: outras páginas HTML do seu disco abertas neste navegador conseguem ler o que for salvo aqui (incluindo gravações). Para isolar, use a versão publicada.';
-    else if (/\.github\.io$/i.test(location.hostname)) w.textContent = '⚠ Em ' + location.hostname + ', todos os sites do GitHub Pages desta conta compartilham o mesmo armazenamento e a permissão do microfone. Para isolar, use um domínio próprio ou outro serviço.';
+    if (location.protocol === 'file:') w.textContent = '⚠ Aberto como arquivo local: outras páginas HTML do seu disco abertas neste navegador conseguem ler as playlists salvas aqui. Para isolar, use a versão publicada.';
+    else if (/\.github\.io$/i.test(location.hostname)) w.textContent = '⚠ Em ' + location.hostname + ', todos os sites do GitHub Pages desta conta compartilham o mesmo armazenamento (as playlists salvas). Para isolar, use um domínio próprio ou outro serviço.';
     if (w.textContent) w.style.display = 'block'; }
   let lastList = null; try { lastList = localStorage.getItem('tocador-last'); } catch(e){}
   if (lastList) openList(lastList, false);

@@ -12,14 +12,13 @@ Um tocador de áudio minimalista, inspirado no Winamp, que roda inteiramente no 
 
 | | |
 |---|---|
-| **Reprodução** | Tocar, pausar, parar, anterior/próxima, aleatório, repetir, barra de progresso, volume e balanço |
+| **Reprodução** | Tocar, pausar, parar, anterior/próxima, aleatório, repetir, barra de progresso, volume e balanço (com centro magnético: ele "gruda" no meio) |
 | **Display estilo Winamp** | Tempo decorrido/restante, título rolante, taxa de bits estimada |
 | **Visualizador** | Barras de espectro com picos, osciloscópio ou desligado |
 | **Equalizador de 10 bandas** | Pré-amplificador e 10 presets (Flat, Rock, Pop, Jazz, Clássica, Eletrônica, Grave+, Agudo+, Voz, Fone) |
 | **6 skins** | Clássico, Âmbar, Oceano, Synthwave, Papel (claro) e Grafite |
 | **Playlists salvas** | Playlists com nome guardadas no navegador junto com o áudio; a última reabre sozinha |
 | **Exportar / importar** | ZIP com as músicas e um `playlist.m3u` (abre no Winamp, VLC, foobar2000…), ou só a lista M3U; o ZIP pode ser importado de volta |
-| **Gravação pelo microfone** | As gravações entram direto na playlist e podem ser equalizadas, salvas e exportadas |
 | **Formatos** | MP3, WAV, OGG, FLAC, M4A, AAC, OPUS, WEBM (o que o seu navegador souber decodificar) |
 | **Privacidade** | Zero requisições a terceiros: sem CDN, sem fontes da web, sem estatísticas; conexões externas bloqueadas por uma política de segurança (CSP) rígida |
 
@@ -43,8 +42,6 @@ Depois toque em **+ ADD** (ou arraste arquivos de áudio para a janela) e aperte
 | `E` | Equalizador | `K` | Próxima skin |
 | `L` | Abrir arquivos | | |
 
-A gravação só começa com um clique em **● REC** — de propósito, não há atalho de teclado.
-
 ## Documentação
 
 - [Guia de uso](docs/pt-BR/guia-de-uso.md) — todos os recursos explicados passo a passo, mais solução de problemas
@@ -59,13 +56,13 @@ A gravação só começa com um clique em **● REC** — de propósito, não h�
 2. Em *Build and deployment*, escolha **Deploy from a branch**, branch `main`, pasta `/ (root)`, e salve
 3. Em um ou dois minutos o tocador estará em `https://<seu-usuario>.github.io/<repositorio>/`
 
-A gravação pelo microfone exige HTTPS, que o GitHub Pages oferece. Atenção: todos os sites do GitHub Pages de uma mesma conta compartilham a mesma origem no navegador — leia [Segurança → Riscos conhecidos](SECURITY.md#riscos-conhecidos) antes de guardar gravações privadas ali.
+Atenção: todos os sites do GitHub Pages de uma mesma conta compartilham a mesma origem no navegador — leia [Segurança → Riscos conhecidos](SECURITY.md#riscos-conhecidos).
 
 O arquivo `_headers` não tem efeito no GitHub Pages; ele adiciona cabeçalhos HTTP de segurança extras quando a pasta é publicada no Netlify ou no Cloudflare Pages.
 
 ## Navegadores compatíveis
 
-Versões atuais do Chrome, Edge, Firefox ou Safari (computador e celular). A gravação usa `MediaRecorder` (Safari 14.1 ou mais novo). Os formatos de áudio dependem dos decodificadores do navegador — por exemplo, o suporte a FLAC e OPUS varia em versões antigas do Safari.
+Versões atuais do Chrome, Edge, Firefox ou Safari (computador e celular). Os formatos de áudio dependem dos decodificadores do navegador — por exemplo, o suporte a FLAC e OPUS varia em versões antigas do Safari.
 
 ## Licença
 

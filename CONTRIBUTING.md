@@ -22,7 +22,7 @@ Thanks for your interest! Bug reports, ideas and pull requests are welcome.
    python3 tools/update-csp.py
    ```
    Scripts are allowed by SHA-256 hash, so a stale hash means the browser blocks the script and the player stops working. Use `python3 tools/update-csp.py --check` to verify (exit code 1 if out of date).
-4. Test locally through a web server (needed for the microphone):
+4. Test locally through a web server:
    ```bash
    python3 -m http.server 8000
    # open http://localhost:8000
@@ -32,10 +32,9 @@ Thanks for your interest! Bug reports, ideas and pull requests are welcome.
 ### Test checklist
 
 - [ ] Add files with **+ ADD** and by drag and drop; play, pause, stop, previous/next, seek
-- [ ] Equalizer presets, PRE, ON/OFF; balance; all 6 skins (including the light **Papel** skin)
+- [ ] Equalizer presets, PRE, ON/OFF; balance snaps to center and the label recenters it; all 6 skins (including the light **Papel** skin)
 - [ ] Save, reload the page, reopen and delete a playlist
 - [ ] Export ZIP and M3U; import the exported ZIP back
-- [ ] Record, stop, play the recording, save it
 - [ ] Browser console shows no errors and no CSP violations
 - [ ] DevTools → Network shows **no external requests**
 - [ ] Mobile viewport (about 380 px wide)
@@ -46,7 +45,7 @@ Thanks for your interest! Bug reports, ideas and pull requests are welcome.
 - Pass every file name or title through `oneLine()`.
 - Wrap storage calls (`localStorage`, `IndexedDB`) in `try/catch`.
 - Do not add dependencies loaded from a CDN. If a library is essential, embed it, record its source and SHA-256 in `THIRD-PARTY-NOTICES.md`, and check its license is compatible.
-- Do not add a keyboard shortcut for recording.
+- Do not add features that request device permissions (microphone, camera, location). The recorder was removed on purpose to keep the attack surface minimal.
 
 ### Adding a skin
 
@@ -81,7 +80,7 @@ Obrigado pelo interesse! Relatos de bugs, ideias e pull requests são bem-vindos
    python3 tools/update-csp.py
    ```
    Os scripts são liberados por hash SHA-256; com o hash desatualizado, o navegador bloqueia o script e o tocador para de funcionar. Use `python3 tools/update-csp.py --check` para conferir (sai com código 1 se estiver desatualizada).
-4. Teste localmente por um servidor web (necessário para o microfone):
+4. Teste localmente por um servidor web:
    ```bash
    python3 -m http.server 8000
    # abra http://localhost:8000
@@ -91,10 +90,9 @@ Obrigado pelo interesse! Relatos de bugs, ideias e pull requests são bem-vindos
 ### Lista de testes
 
 - [ ] Adicionar arquivos pelo **+ ADD** e arrastando; tocar, pausar, parar, anterior/próxima, barra de progresso
-- [ ] Presets do equalizador, PRE, ON/OFF; balanço; as 6 skins (inclusive a clara, **Papel**)
+- [ ] Presets do equalizador, PRE, ON/OFF; balanço trava no centro e o rótulo recentraliza; as 6 skins (inclusive a clara, **Papel**)
 - [ ] Salvar, recarregar a página, reabrir e apagar uma playlist
 - [ ] Exportar ZIP e M3U; importar de volta o ZIP exportado
-- [ ] Gravar, parar, tocar a gravação, salvar
 - [ ] Console do navegador sem erros e sem violações de CSP
 - [ ] DevTools → Network **sem requisições externas**
 - [ ] Tela de celular (cerca de 380 px de largura)
@@ -105,7 +103,7 @@ Obrigado pelo interesse! Relatos de bugs, ideias e pull requests são bem-vindos
 - Passe todo nome de arquivo ou título por `oneLine()`.
 - Proteja acessos a armazenamento (`localStorage`, `IndexedDB`) com `try/catch`.
 - Não adicione dependências carregadas de CDN. Se uma biblioteca for essencial, embuta-a, registre origem e SHA-256 em `THIRD-PARTY-NOTICES.md` e confira se a licença é compatível.
-- Não crie atalho de teclado para a gravação.
+- Não adicione recursos que peçam permissões do aparelho (microfone, câmera, localização). O gravador foi removido de propósito para manter a superfície de ataque mínima.
 
 ### Criando uma skin
 

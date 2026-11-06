@@ -15,17 +15,16 @@ The player's interface is in Portuguese (Brazil). Labels are quoted here exactly
 7. [Playlist](#7-playlist)
 8. [Saving playlists](#8-saving-playlists)
 9. [Exporting and importing](#9-exporting-and-importing)
-10. [Recording from the microphone](#10-recording-from-the-microphone)
-11. [Keyboard shortcuts](#11-keyboard-shortcuts)
-12. [Privacy: where your data lives](#12-privacy-where-your-data-lives)
-13. [Troubleshooting](#13-troubleshooting)
+10. [Keyboard shortcuts](#10-keyboard-shortcuts)
+11. [Privacy: where your data lives](#11-privacy-where-your-data-lives)
+12. [Troubleshooting](#12-troubleshooting)
 
 ## 1. Opening the player
 
-| Method | How | Does recording work? |
-|---|---|---|
-| Published site (GitHub Pages, Netlify…) | Open the `https://` address in a browser | Yes, on desktop and mobile |
-| Local file | Download `index.html` and double-click it | Yes on desktop; usually not on mobile |
+| Method | How |
+|---|---|
+| Published site (GitHub Pages, Netlify…) | Open the `https://` address in a browser, on desktop or mobile |
+| Local file | Download `index.html` and double-click it |
 
 Tip: on a phone, use **Add to Home Screen** from the browser menu to open the player like an app.
 
@@ -49,15 +48,15 @@ Accepted formats: MP3, WAV, OGG, FLAC, M4A, AAC, OPUS and WEBM. If the browser c
 | **REP** | Repeat the whole playlist when it ends |
 | Seek bar | Drag to jump anywhere in the track |
 | **VOL** | Volume |
-| **BAL** | Left/right balance. Double-click to center |
+| **BAL** | Left/right balance. It has a center mark and a magnetic center: near the middle it snaps to center. The label shows `BAL ●` (center), `E 40` (left, *esquerda*) or `D 25` (right, *direita*); **tap the label** or double-click the control to recenter |
 
 ## 4. Display and visualizer
 
 - **Clock**: tap it to toggle between **elapsed** and **remaining** time (shows `REST`).
-- **Status**: `▶ PLAY`, `❚❚ PAUSE`, `■ STOP` or `● REC`.
+- **Status**: `▶ PLAY`, `❚❚ PAUSE` or `■ STOP`.
 - **Title**: scrolls automatically when it does not fit.
 - **kbps**: bitrate estimated from file size and duration.
-- **Visualizer**: tap to cycle between **spectrum bars** (with slowly falling peaks), **oscilloscope** and **off**. While recording, it shows the microphone signal.
+- **Visualizer**: tap to cycle between **spectrum bars** (with slowly falling peaks), **oscilloscope** and **off**.
 
 ## 5. Equalizer
 
@@ -69,7 +68,7 @@ Tap **EQ** to open it.
 - **ZERAR** (reset): sets everything to 0 dB. Double-clicking a single band resets only that band.
 - **ON/OFF** (window title bar): bypasses the equalizer for A/B comparison.
 
-The equalizer also applies to recordings and works in real time; it **does not change** exported files.
+The equalizer works in real time; it **does not change** exported files.
 
 ## 6. Skins
 
@@ -104,23 +103,7 @@ When importing a ZIP, the player follows the order of the `.m3u` inside it; trac
 
 Inside Claude, the browser asks for confirmation before saving an exported file.
 
-## 10. Recording from the microphone
-
-1. Tap **● REC**. The first time, the browser asks for microphone permission.
-2. Playback pauses, the button becomes a blinking **■ PARAR** (stop), and the display shows the recording time.
-3. Tap **■ PARAR**. The recording is appended to the playlist as `Gravação DD/MM HH:MM:SS` ("Recording" + date and time).
-4. To keep it, save the playlist under **LISTAS** or export a ZIP.
-
-Details:
-
-- The format depends on the browser: **WEBM/Opus** (Chrome, Edge, Firefox) or **M4A/AAC** (Safari).
-- Echo cancellation, noise suppression and automatic gain are disabled, so the sound is captured as-is.
-- The microphone is not routed to the speakers while recording (no feedback).
-- Recordings shorter than half a second are discarded.
-- The microphone is released when you stop or leave the page.
-- Recording is disabled when the player is embedded in another page (iframe), so a third-party site cannot trick you into clicking REC.
-
-## 11. Keyboard shortcuts
+## 10. Keyboard shortcuts
 
 | Key | Action | Key | Action |
 |---|---|---|---|
@@ -134,26 +117,25 @@ Details:
 
 Shortcuts are ignored while typing in the playlist name field.
 
-## 12. Privacy: where your data lives
+## 11. Privacy: where your data lives
 
 | Data | Where |
 |---|---|
 | Music added but not saved | Tab memory only; gone when the tab closes |
-| Saved playlists and recordings | The browser's IndexedDB on this device, unencrypted |
+| Saved playlists | The browser's IndexedDB on this device, unencrypted |
 | Chosen skin and last playlist | The browser's `localStorage` |
 | Anything | **Never** sent over the internet |
 
 When the player runs as a local file or on a `*.github.io` address, it shows a warning under **LISTAS**, because in those cases other pages from the same place can access its storage. See [SECURITY.md](../../SECURITY.md#known-risks).
 
-## 13. Troubleshooting
+## 12. Troubleshooting
 
 | Problem | Fix |
 |---|---|
 | A track does not play | The browser cannot decode that format. Convert it to MP3 or try another browser |
 | Duration shows `--:--` | The file is still being read or has no duration metadata; it appears once it plays |
-| "Permissão do microfone negada" (microphone permission denied) | Allow the microphone for the site in the browser settings (padlock icon in the address bar) |
-| "O microfone só funciona em https://" (microphone needs https) | Use the published version (GitHub Pages) or open the local file on a desktop |
 | "Sem espaço no navegador" (out of browser storage) | The browser limited storage. Delete old playlists or export them as ZIP |
 | Playlists disappeared | Browser data was cleared, or you opened the player from another address/browser. Each address has its own storage |
 | Sound distorts with the EQ | Lower **PRE** |
+| I can't set a small balance value (1–10) | That is the magnetic center: values up to 10 on either side snap back to the middle, by design |
 | Shortcuts do not respond | Click an empty area of the player to move focus away from fields and menus |

@@ -19,7 +19,6 @@ index.html
      ├── playlist and transport
      ├── storage (IndexedDB / localStorage)
      ├── export / import (JSZip, M3U)
-     ├── recording (MediaRecorder)
      ├── equalizer, skins, marquee, visualizer
      └── drag and drop, keyboard shortcuts
 ```
@@ -42,9 +41,10 @@ Playback uses one `HTMLAudioElement`. On the first user interaction (browsers re
 | 16 kHz | `highshelf` |
 
 - PRE gain is converted from dB to linear (`10^(dB/20)`).
+- **Balance** ranges from −100 to +100 and is applied as `pan` from −1 to +1. Values between −10 and +10 become 0 (magnetic center); the track fills from the center and the label shows `BAL ●`, `E n` (left) or `D n` (right). On phones, a short vibration signals the snap to center.
 - **EQ OFF** rewires the graph without the preamp and filters.
 - The `AnalyserNode` (FFT size 1024, smoothing 0.75) drives the visualizer: 28 log-spaced bars over the lowest 70% of the bins, with slowly falling peaks, or the raw waveform in oscilloscope mode.
-- Tracks with unknown duration (WEBM produced by `MediaRecorder` reports `Infinity`) get a fix-up: the player seeks to the end, reads the real duration, and seeks back to the start.
+- Tracks with unknown duration (some WEBM files report `Infinity`) get a fix-up: the player seeks to the end, reads the real duration, and seeks back to the start.
 
 ## Playlist and transport
 
@@ -98,13 +98,6 @@ Duration is rounded to seconds, or `-1` when unknown.
 
 Nothing is written to disk, so malicious paths inside the ZIP (`../`) have no effect.
 
-## Recording
-
-- `getUserMedia({ audio })` with `echoCancellation`, `noiseSuppression` and `autoGainControl` disabled.
-- Format: the first supported of `audio/webm;codecs=opus`, `audio/webm`, `audio/mp4`, `audio/ogg;codecs=opus`, at 128 kbps, in 250 ms chunks.
-- While recording, the microphone feeds a separate `AnalyserNode` that is **not connected to the output**, only to the visualizer.
-- Safeguards: a lock against repeated clicks while permission is pending, automatic stop on `pagehide`, disabled when the page is framed, and no keyboard shortcut for recording.
-
 ## Skins
 
 Each skin is a set of CSS custom properties applied through `data-skin` on the `<html>` element:
@@ -118,8 +111,9 @@ The canvas visualizer re-reads the colors when the skin changes. To add a skin, 
 | Layer | Measure |
 |---|---|
 | CSP (meta tag) | `default-src 'none'`; scripts allowed **only by SHA-256 hash**; `connect-src 'none'`; no external fonts, images or media |
-| HTTP headers (`_headers`) | Same CSP + `frame-ancestors 'none'`, `Permissions-Policy` (microphone for self only), `X-Frame-Options`, `nosniff`, `no-referrer`, HSTS — applied on Netlify/Cloudflare Pages |
+| HTTP headers (`_headers`) | Same CSP + `frame-ancestors 'none'`, `Permissions-Policy` (microphone, camera and location blocked), `X-Frame-Options`, `nosniff`, `no-referrer`, HSTS — applied on Netlify/Cloudflare Pages |
 | User data | Always rendered as text; names sanitized |
+| Permissions | The player uses no microphone, camera or location; `Permissions-Policy` blocks them all |
 | Imported files | Size and count limits; nothing written to disk |
 | Third parties | No external resources; JSZip embedded with a documented hash |
 
@@ -133,8 +127,7 @@ Remaining risks are listed in [SECURITY.md](../../SECURITY.md#known-risks).
 |---|---|
 | Equalizer and visualizer | Web Audio API (`AudioContext`, `BiquadFilterNode`, `StereoPannerNode`, `AnalyserNode`) |
 | Playlists | IndexedDB, `navigator.storage.persist` |
-| Recording | `MediaDevices.getUserMedia`, `MediaRecorder` |
 | ZIP | JSZip (ArrayBuffer/Blob) |
 | Vertical EQ sliders | `writing-mode: vertical-lr` on `input[type=range]` |
 
-Without `StereoPannerNode`, balance is ignored; without `MediaRecorder`, the REC button shows a message.
+Without `StereoPannerNode`, balance is ignored.

@@ -19,7 +19,6 @@ index.html
      ├── playlist e transporte
      ├── armazenamento (IndexedDB / localStorage)
      ├── exportar / importar (JSZip, M3U)
-     ├── gravação (MediaRecorder)
      ├── equalizador, skins, letreiro, visualizador
      └── arrastar e soltar, atalhos de teclado
 ```
@@ -40,9 +39,10 @@ A reprodução usa um único `HTMLAudioElement`. Na primeira interação do usu�
 | 16 kHz | `highshelf` |
 
 - O ganho do PRE é convertido de dB para linear (`10^(dB/20)`).
+- O **balanço** vai de −100 a +100 e é aplicado como `pan` de −1 a +1. Valores entre −10 e +10 viram 0 (trava magnética no centro); a barra é preenchida a partir do centro e o rótulo mostra `BAL ●`, `E n` ou `D n`. No celular, uma vibração curta avisa quando ele trava no centro.
 - **EQ OFF** reconecta a cadeia sem o pré-amplificador e os filtros.
 - O `AnalyserNode` (FFT de 1024, suavização 0,75) alimenta o visualizador: 28 barras em escala logarítmica sobre os primeiros 70% das frequências, com picos que caem devagar, ou a forma de onda no modo osciloscópio.
-- Faixas sem duração conhecida (WEBM gravado pelo `MediaRecorder` informa `Infinity`) recebem um ajuste: o tocador manda a posição para o fim, lê a duração real e volta ao início.
+- Faixas sem duração conhecida (alguns WEBM informam `Infinity`) recebem um ajuste: o tocador manda a posição para o fim, lê a duração real e volta ao início.
 
 ## Playlist e transporte
 
@@ -60,7 +60,7 @@ Nomes de arquivos e títulos passam por `oneLine()`: remove caracteres de contro
 | `lists` | `name` (keyPath) | `{ name, updated, items: [{ key, name, dur }] }` |
 
 - Arquivos iguais em várias playlists são guardados **uma vez só** (mesma chave).
-- Salvar grava os arquivos e a lista numa única transação.
+- Salvar guarda os arquivos e a lista numa única transação.
 - Apagar uma lista também apaga os arquivos que nenhuma outra lista usa.
 - Depois de salvar, o tocador chama `navigator.storage.persist()` para pedir que o navegador não apague os dados sozinho.
 
@@ -96,13 +96,6 @@ A duração vai arredondada em segundos, ou `-1` se desconhecida.
 
 Nada é gravado em disco, então caminhos maliciosos dentro do ZIP (`../`) não têm efeito.
 
-## Gravação
-
-- `getUserMedia({ audio })` com `echoCancellation`, `noiseSuppression` e `autoGainControl` desligados.
-- Formato: o primeiro suportado entre `audio/webm;codecs=opus`, `audio/webm`, `audio/mp4` e `audio/ogg;codecs=opus`, a 128 kbps, em blocos de 250 ms.
-- Durante a gravação, o microfone vai para um `AnalyserNode` separado, **não ligado à saída**, só para o visualizador.
-- Proteções: trava contra cliques repetidos enquanto a permissão é pedida, parada automática em `pagehide`, bloqueio quando a página está dentro de um iframe, e nenhum atalho de teclado para gravar.
-
 ## Skins
 
 Cada skin é um conjunto de variáveis CSS aplicado por `data-skin` no elemento `<html>`:
@@ -116,8 +109,9 @@ O visualizador (canvas) relê as cores ao trocar de skin. Para criar uma skin no
 | Camada | Medida |
 |---|---|
 | CSP (meta tag) | `default-src 'none'`; scripts liberados **só por hash SHA-256**; `connect-src 'none'`; sem fontes, imagens ou mídia externas |
-| Cabeçalhos HTTP (`_headers`) | Mesma CSP + `frame-ancestors 'none'`, `Permissions-Policy` (microfone só no próprio site), `X-Frame-Options`, `nosniff`, `no-referrer`, HSTS — aplicados no Netlify/Cloudflare Pages |
+| Cabeçalhos HTTP (`_headers`) | Mesma CSP + `frame-ancestors 'none'`, `Permissions-Policy` (microfone, câmera e localização bloqueados), `X-Frame-Options`, `nosniff`, `no-referrer`, HSTS — aplicados no Netlify/Cloudflare Pages |
 | Dados do usuário | Sempre exibidos como texto; nomes higienizados |
+| Permissões | O tocador não usa microfone, câmera nem localização; `Permissions-Policy` bloqueia todos |
 | Arquivos importados | Limites de tamanho e quantidade; nada escrito em disco |
 | Terceiros | Nenhum recurso externo; JSZip embutido com hash documentado |
 
@@ -131,8 +125,7 @@ Riscos que continuam estão em [SECURITY.md](../../SECURITY.md#riscos-conhecidos
 |---|---|
 | Equalizador e visualizador | Web Audio API (`AudioContext`, `BiquadFilterNode`, `StereoPannerNode`, `AnalyserNode`) |
 | Playlists | IndexedDB, `navigator.storage.persist` |
-| Gravação | `MediaDevices.getUserMedia`, `MediaRecorder` |
 | ZIP | JSZip (ArrayBuffer/Blob) |
 | Sliders verticais do EQ | `writing-mode: vertical-lr` em `input[type=range]` |
 
-Sem `StereoPannerNode`, o balanço é ignorado; sem `MediaRecorder`, o botão REC mostra uma mensagem.
+Sem `StereoPannerNode`, o balanço é ignorado.

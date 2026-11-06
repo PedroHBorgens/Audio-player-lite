@@ -13,17 +13,16 @@
 7. [Playlist](#7-playlist)
 8. [Salvando playlists](#8-salvando-playlists)
 9. [Exportando e importando](#9-exportando-e-importando)
-10. [Gravando pelo microfone](#10-gravando-pelo-microfone)
-11. [Atalhos de teclado](#11-atalhos-de-teclado)
-12. [Privacidade: onde ficam seus dados](#12-privacidade-onde-ficam-seus-dados)
-13. [Solução de problemas](#13-solução-de-problemas)
+10. [Atalhos de teclado](#10-atalhos-de-teclado)
+11. [Privacidade: onde ficam seus dados](#11-privacidade-onde-ficam-seus-dados)
+12. [Solução de problemas](#12-solução-de-problemas)
 
 ## 1. Abrindo o tocador
 
-| Forma | Como | Gravação funciona? |
-|---|---|---|
-| Site publicado (GitHub Pages, Netlify…) | Abra o endereço `https://` no navegador | Sim, no computador e no celular |
-| Arquivo local | Baixe o `index.html` e abra com dois cliques | Sim no computador; no celular normalmente não |
+| Forma | Como |
+|---|---|
+| Site publicado (GitHub Pages, Netlify…) | Abra o endereço `https://` no navegador, no computador ou no celular |
+| Arquivo local | Baixe o `index.html` e abra com dois cliques |
 
 Dica: no celular, use **Adicionar à tela de início** no menu do navegador para abrir o tocador como um app.
 
@@ -47,15 +46,15 @@ Formatos aceitos: MP3, WAV, OGG, FLAC, M4A, AAC, OPUS e WEBM. Se o navegador nã
 | **REP** | Repetir a playlist inteira ao chegar ao fim |
 | Barra de progresso | Arraste para ir a qualquer ponto da música |
 | **VOL** | Volume |
-| **BAL** | Balanço esquerdo/direito. Dê dois cliques para centralizar |
+| **BAL** | Balanço esquerdo/direito. Tem uma marca no centro e uma trava magnética: perto do meio, ele "gruda" no centro. O rótulo mostra `BAL ●` (centro), `E 40` (esquerda) ou `D 25` (direita); **toque no rótulo** ou dê dois cliques no controle para voltar ao centro |
 
 ## 4. Display e visualizador
 
 - **Relógio**: toque nele para alternar entre tempo **decorrido** e **restante** (aparece `REST`).
-- **Status**: `▶ PLAY`, `❚❚ PAUSE`, `■ STOP` ou `● REC`.
+- **Status**: `▶ PLAY`, `❚❚ PAUSE` ou `■ STOP`.
 - **Título**: rola sozinho quando o nome não cabe.
 - **kbps**: taxa de bits estimada a partir do tamanho do arquivo e da duração.
-- **Visualizador**: toque para alternar entre **barras de espectro** (com picos que caem devagar), **osciloscópio** e **desligado**. Durante uma gravação, ele mostra o som do microfone.
+- **Visualizador**: toque para alternar entre **barras de espectro** (com picos que caem devagar), **osciloscópio** e **desligado**.
 
 ## 5. Equalizador
 
@@ -67,7 +66,7 @@ Toque em **EQ** para abrir.
 - **ZERAR**: volta tudo a 0 dB. Dois cliques em uma banda zeram só ela.
 - **ON/OFF** (no título da janela): liga e desliga o equalizador para comparar.
 
-O equalizador vale também para as gravações e é aplicado em tempo real; ele **não altera** os arquivos exportados.
+O equalizador é aplicado em tempo real; ele **não altera** os arquivos exportados.
 
 ## 6. Skins
 
@@ -102,23 +101,7 @@ Ao importar um ZIP, o tocador segue a ordem do `.m3u` dentro dele; faixas que n�
 
 Dentro do Claude, o navegador pede confirmação antes de salvar o arquivo exportado.
 
-## 10. Gravando pelo microfone
-
-1. Toque em **● REC**. Na primeira vez, o navegador pede permissão para o microfone.
-2. A música pausa, o botão vira **■ PARAR** e pisca, e o display mostra o tempo gravado.
-3. Toque em **■ PARAR**. A gravação entra no fim da playlist com o nome `Gravação DD/MM HH:MM:SS`.
-4. Para não perdê-la, salve a playlist em **LISTAS** ou exporte em ZIP.
-
-Detalhes:
-
-- O formato depende do navegador: **WEBM/Opus** (Chrome, Edge, Firefox) ou **M4A/AAC** (Safari).
-- Cancelamento de eco, redução de ruído e ganho automático ficam desligados, para gravar o som como ele é.
-- O som do microfone não sai nos alto-falantes durante a gravação (sem microfonia).
-- Gravações com menos de meio segundo são descartadas.
-- O microfone é desligado ao parar ou ao sair da página.
-- A gravação fica desativada se o tocador estiver dentro de outra página (iframe), para impedir que um site engane você a clicar em REC.
-
-## 11. Atalhos de teclado
+## 10. Atalhos de teclado
 
 | Tecla | Ação | Tecla | Ação |
 |---|---|---|---|
@@ -132,26 +115,25 @@ Detalhes:
 
 Os atalhos não funcionam enquanto você digita no campo de nome da playlist.
 
-## 12. Privacidade: onde ficam seus dados
+## 11. Privacidade: onde ficam seus dados
 
 | Dado | Onde fica |
 |---|---|
 | Músicas adicionadas sem salvar | Só na memória da aba; somem ao fechar |
-| Playlists salvas e gravações | IndexedDB do navegador, neste aparelho, sem criptografia |
+| Playlists salvas | IndexedDB do navegador, neste aparelho, sem criptografia |
 | Skin escolhida e última playlist | `localStorage` do navegador |
 | Qualquer coisa | **Nunca** é enviada pela internet |
 
 Se o tocador estiver aberto como arquivo local ou em um endereço `*.github.io`, ele mostra um aviso em **LISTAS**, porque nesses casos outras páginas do mesmo lugar podem acessar o armazenamento. Detalhes em [SECURITY.md](../../SECURITY.md#riscos-conhecidos).
 
-## 13. Solução de problemas
+## 12. Solução de problemas
 
 | Problema | Solução |
 |---|---|
 | A faixa não toca | O navegador não decodifica esse formato. Converta para MP3 ou tente outro navegador |
 | Duração aparece `--:--` | O arquivo ainda está sendo lido, ou não informa a duração. Ela aparece ao tocar |
-| "Permissão do microfone negada" | Libere o microfone para o site nas configurações do navegador (ícone de cadeado na barra de endereço) |
-| "O microfone só funciona em https://" | Use a versão publicada (GitHub Pages) ou abra o arquivo local no computador |
 | "Sem espaço no navegador" | O navegador limitou o armazenamento. Apague playlists antigas ou exporte em ZIP |
 | As playlists sumiram | Os dados do navegador foram limpos, ou você abriu o tocador por outro endereço/navegador. Cada endereço tem o próprio armazenamento |
 | O som distorce com o EQ | Abaixe o **PRE** |
+| Não consigo deixar o balanço em um valor pequeno (1 a 10) | É a trava magnética do centro: valores até 10 para cada lado voltam para o meio, de propósito |
 | Os atalhos não respondem | Clique em uma área vazia do tocador para tirar o foco de campos e menus |

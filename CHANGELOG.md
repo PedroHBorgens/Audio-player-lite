@@ -2,6 +2,17 @@
 
 Format based on [Keep a Changelog](https://keepachangelog.com/). / Formato baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/).
 
+## [1.1.0] — 2026-11-06
+
+### Removed / Removido
+
+- Microphone recorder, to remove all device-permission risks / Gravador pelo microfone, para eliminar os riscos ligados a permissões do aparelho
+
+### Changed / Alterado
+
+- Balance control: center mark, magnetic snap to center (±10), fill from the center, label showing `BAL ●` / `E n` / `D n`; tap the label to recenter / Controle de balanço: marca no centro, trava magnética no centro (±10), preenchimento a partir do centro, rótulo `BAL ●` / `E n` / `D n`; toque no rótulo para recentralizar
+- `Permissions-Policy` now blocks the microphone too / `Permissions-Policy` agora bloqueia também o microfone
+
 ## [1.0.0] — 2026-11-05
 
 ### Added / Adicionado

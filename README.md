@@ -14,14 +14,13 @@ A minimalist, Winamp-inspired audio player that runs entirely in your browser. I
 
 | | |
 |---|---|
-| **Playback** | Play, pause, stop, previous/next, shuffle, repeat, seek bar, volume and stereo balance |
+| **Playback** | Play, pause, stop, previous/next, shuffle, repeat, seek bar, volume and stereo balance (with a magnetic center: it snaps back to the middle) |
 | **Winamp-style display** | Elapsed/remaining time, scrolling title, estimated bitrate |
 | **Visualizer** | Spectrum bars with falling peaks, oscilloscope, or off |
 | **10-band equalizer** | Preamp plus 10 presets (Flat, Rock, Pop, Jazz, Classical, Electronic, Bass+, Treble+, Vocal, Headphones) |
 | **6 skins** | Classic, Amber, Ocean, Synthwave, Paper (light) and Graphite |
 | **Saved playlists** | Named playlists stored in the browser together with the audio; the last one reopens automatically |
 | **Export / import** | ZIP with the audio files plus `playlist.m3u` (opens in Winamp, VLC, foobar2000…), or the M3U list alone; ZIPs can be imported back |
-| **Microphone recording** | Recordings go straight into the playlist and can be equalized, saved and exported |
 | **Formats** | MP3, WAV, OGG, FLAC, M4A, AAC, OPUS, WEBM (whatever your browser can decode) |
 | **Privacy** | Zero third-party requests: no CDN, no web fonts, no analytics; external connections are blocked by a strict Content Security Policy |
 
@@ -45,8 +44,6 @@ Then tap **+ ADD** (or drag audio files onto the window) and press play.
 | `E` | Equalizer | `K` | Next skin |
 | `L` | Open files | | |
 
-Recording can only be started by clicking **● REC** — there is intentionally no keyboard shortcut.
-
 ## Documentation
 
 - [User guide](docs/en/user-guide.md) — every feature explained, step by step, plus troubleshooting
@@ -61,13 +58,13 @@ Recording can only be started by clicking **● REC** — there is intentionally
 2. Under *Build and deployment*, choose **Deploy from a branch**, branch `main`, folder `/ (root)`, and save
 3. After a minute or two the player is live at `https://<your-user>.github.io/<repository>/`
 
-Microphone recording requires HTTPS, which GitHub Pages provides. Note that all GitHub Pages sites of the same account share one browser origin — read [Security → Known risks](SECURITY.md#known-risks) before storing private recordings there.
+Note that all GitHub Pages sites of the same account share one browser origin — read [Security → Known risks](SECURITY.md#known-risks).
 
 The `_headers` file has no effect on GitHub Pages; it adds extra HTTP security headers when the folder is deployed to Netlify or Cloudflare Pages.
 
 ## Browser support
 
-Any current version of Chrome, Edge, Firefox or Safari (desktop and mobile). Recording needs `MediaRecorder` (Safari 14.1+). Audio formats depend on the browser's decoders — for example, FLAC and OPUS support varies on older Safari versions.
+Any current version of Chrome, Edge, Firefox or Safari (desktop and mobile). Audio formats depend on the browser's decoders — for example, FLAC and OPUS support varies on older Safari versions.
 
 ## License
 
