@@ -48,7 +48,7 @@ Formatos aceitos: MP3, WAV, OGG, FLAC, M4A, AAC, OPUS e WEBM. Se o navegador nã
 | ■ | Parar e voltar ao início |
 | ⏭ | Próxima faixa |
 | **SHUF** | Ordem aleatória (aceso = ligado) |
-| **REP** | Cada toque troca o modo: **desligado** → **lista inteira** (aceso, `↻` no display) → **só esta faixa** (aceso com um `1`, `↻1` no display). Em "só esta faixa", a música recomeça ao terminar; os botões ⏮ ⏭ continuam trocando de faixa |
+| **REP** | Cada toque troca o modo: **desligado** → **lista inteira** (aceso com um **∞** no canto, `↻` no display) → **só esta faixa** (aceso com um **1** no canto, `↻1` no display). Em "só esta faixa", a música recomeça ao terminar; os botões ⏮ ⏭ continuam trocando de faixa |
 | Barra de progresso | Arraste para ir a qualquer ponto da música |
 | **VOL** | Volume |
 | **BAL** | Balanço esquerdo/direito. Tem uma marca no centro e uma trava magnética: perto do meio, ele "gruda" no centro. O rótulo mostra `BAL ●` (centro), `E 40` (esquerda) ou `D 25` (direita); **toque no rótulo** ou dê dois cliques no controle para voltar ao centro |

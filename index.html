@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-UyJpdxXCJTDaeaknKqEkzDeKp2XGn4OrcySY11Gkyw4=' 'sha256-u4eP+Ko4HIqc3ccjETy5IHhuX0CqNyM73uiu2KVatZo='; style-src 'unsafe-inline'; media-src blob:; img-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-UyJpdxXCJTDaeaknKqEkzDeKp2XGn4OrcySY11Gkyw4=' 'sha256-ejHa1JPRmN3vVjaf7nGzG0foaS869bM3XNC7tatR1Qg='; style-src 'unsafe-inline'; media-src blob:; img-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Tocador Minimalista</title>
 <style>
@@ -139,8 +139,10 @@
   .msg.err{color:#e06c6c}
   .plmsg{padding:6px 10px 0}
   .plmsg:empty{display:none}
-  .btn.rep1{position:relative}
-  .btn.rep1::after{content:'1';position:absolute;top:1px;right:3px;font-size:8px;line-height:1;color:var(--accent)}
+  /* marca no canto do REP: ∞ = lista inteira, 1 = só esta faixa */
+  .btn[data-badge]{position:relative}
+  .btn[data-badge]::after{content:attr(data-badge);position:absolute;top:1px;right:3px;font-size:9px;line-height:1;font-weight:600;color:var(--accent)}
+  .btn[data-badge="∞"]::after{font-size:13px;top:-1px;right:2px}
 </style>
 </head>
 <body>
@@ -709,7 +711,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   function setRepeat(m){
     repeat = m; const b = $('rep');
     b.textContent = REP_INFO[m][0]; b.title = REP_INFO[m][1] + ' (R alterna)';
-    b.classList.toggle('on', m !== 'off'); b.classList.toggle('rep1', m === 'one');
+    b.classList.toggle('on', m !== 'off');
+    if (m === 'off') b.removeAttribute('data-badge'); else b.setAttribute('data-badge', m === 'one' ? '1' : '∞');
     b.setAttribute('aria-label', REP_INFO[m][1]);
     $('mode').textContent = m === 'one' ? '↻1' : m === 'all' ? '↻' : (remaining ? 'REST' : '');
   }

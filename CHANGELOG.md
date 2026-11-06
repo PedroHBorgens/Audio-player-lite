@@ -2,6 +2,12 @@
 
 Format based on [Keep a Changelog](https://keepachangelog.com/). / Formato baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/).
 
+## [1.2.1] — 2026-11-06
+
+### Changed / Alterado
+
+- The REP button now shows **∞** in the corner when repeating the whole playlist, just like the **1** for the current track / O botão REP agora mostra **∞** no canto ao repetir a lista inteira, assim como o **1** para a faixa atual
+
 ## [1.2.0] — 2026-11-06
 
 ### Added / Adicionado
